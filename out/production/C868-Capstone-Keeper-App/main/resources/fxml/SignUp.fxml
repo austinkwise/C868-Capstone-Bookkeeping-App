@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<GridPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="main.SignUpController"
+            alignment="center" maxHeight="400" maxWidth="600" minHeight="400" minWidth="600" style="-fx-background-color: #2b2b2d;">
+
+    <children>
+        <HBox prefHeight="400.0" prefWidth="600.0">
+            <children>
+                <AnchorPane prefHeight="403.0" prefWidth="305.0">
+                    <children>
+                        <VBox alignment="CENTER" layoutX="31.0" layoutY="34.0" prefHeight="333.0" prefWidth="242.0" style="-fx-background-color: #00b894;">
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="37.0" prefWidth="152.0" text="Create an account">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="usernametf" alignment="CENTER" promptText="username">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </VBox.margin>
+                                </TextField>
+                                <PasswordField fx:id="passwordtf" alignment="CENTER" promptText="Password">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </VBox.margin>
+                                </PasswordField>
+                                <TextField fx:id="firstnametf" alignment="CENTER" prefWidth="189.0" promptText="First name">
+                                    <font>
+                                        <Font name="Copperplate Bold" size="14.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </VBox.margin>
+                                </TextField>
+                                <TextField fx:id="lastnametf" alignment="CENTER" prefHeight="27.0" prefWidth="88.0" promptText="Last Name">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font name="Copperplate Bold" size="13.0" />
+                                    </font>
+                                </TextField>
+                                <TextField fx:id="emailtf" alignment="CENTER" prefHeight="26.0" prefWidth="191.0" promptText="Email">
+                                    <font>
+                                        <Font name="Copperplate" size="14.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </VBox.margin>
+                                </TextField>
+                                <TextField fx:id="phonetf" alignment="CENTER" prefHeight="26.0" prefWidth="191.0" promptText="Phone Number">
+                                    <font>
+                                        <Font name="Copperplate" size="14.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </VBox.margin>
+                                </TextField>
+                                <TextField fx:id="orgNametf" alignment="CENTER" promptText="Organization Name">
+                                    <font>
+                                        <Font name="Copperplate" size="14.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </VBox.margin>
+                                </TextField>
+                                <Button mnemonicParsing="false" onAction="#signUpClicked" prefHeight="27.0" prefWidth="137.0" style="-fx-background-color: #55efc4;" text="Sign Up">
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </VBox>
+                        <Button alignment="TOP_RIGHT" layoutX="2.0" layoutY="3.0" mnemonicParsing="false" onAction="#backClicked" style="-fx-background-color: #2b2b2d;" text="&lt;-" textFill="WHITE" />
+                    </children>
+                </AnchorPane>
+                <VBox alignment="TOP_CENTER" prefHeight="406.0" prefWidth="300.0" style="-fx-background-color: #434447;">
+                    <children>
+                        <HBox alignment="TOP_RIGHT" prefHeight="56.0" prefWidth="298.0" />
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="298.0" style="-fx-background-color: #00b894;">
+                            <children>
+                                <Label text="------OR------">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <VBox.margin>
+                                <Insets left="10.0" right="10.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <Label alignment="CENTER" prefHeight="39.0" prefWidth="239.0" text="Enter Organization Code" textFill="WHITE">
+                            <font>
+                                <Font name="Copperplate" size="18.0" />
+                            </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="298.0">
+                            <children>
+                                <TextField promptText="Organization Code">
+                                    <font>
+                                        <Font name="Copperplate Bold" size="14.0" />
+                                    </font>
+                                </TextField>
+                                <Label prefHeight="17.0" prefWidth="27.0" />
+                                <Button mnemonicParsing="false" style="-fx-background-color: #55efc4;" text="Search">
+                                    <font>
+                                        <Font name="Copperplate" size="14.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="44.0" prefWidth="298.0">
+                            <children>
+                                <Label prefHeight="34.0" prefWidth="70.0" text="Name: " textFill="WHITE">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label textFill="WHITE">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="40.0" prefWidth="298.0">
+                            <children>
+                                <Label prefHeight="17.0" prefWidth="67.0" text="Role:" textFill="WHITE">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label textFill="WHITE">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="53.0" prefWidth="298.0">
+                            <children>
+                                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="23.0" prefWidth="110.0" style="-fx-background-color: #55efc4;" text="Confirm">
+                                    <font>
+                                        <Font name="Copperplate" size="13.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+    </rowConstraints>
+</GridPane>
