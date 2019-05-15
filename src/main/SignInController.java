@@ -4,15 +4,19 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import main.Bookkeeper;
 import main.Helpers.DBHelper;
 import main.Model.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
+
+
 public class SignInController {
     private Bookkeeper myBk;
     private DBHelper myDb;
+
     @FXML
     private TextField usernameEmailTF, passwordTF;
 

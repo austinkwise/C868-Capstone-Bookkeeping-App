@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="450.0" style="-fx-background-color: #434447; -fx-border-color: #55efc4;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ProfileController">
+   <children>
+      <VBox layoutX="1.0" layoutY="1.0" prefHeight="400.0" prefWidth="444.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="61.0" prefWidth="444.0">
+               <children>
+                  <Label prefHeight="65.0" prefWidth="356.0" text="Your Profile" textFill="WHITE">
+                     <font>
+                        <Font name="Copperplate" size="23.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="444.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="132.0" text="Username:" textFill="WHITE">
+                     <font>
+                        <Font name="Copperplate" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="usernameTf" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="71.0" prefHeight="52.0" prefWidth="444.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="78.0" text="Name:" textFill="WHITE">
+                     <font>
+                        <Font name="Copperplate" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="nameTf" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="71.0" prefHeight="52.0" prefWidth="444.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="78.0" text="Email:" textFill="WHITE">
+                     <font>
+                        <Font name="Copperplate" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="emailTf" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="123.0" prefHeight="52.0" prefWidth="444.0">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="78.0" text="Phone:" textFill="WHITE">
+                     <font>
+                        <Font name="Copperplate" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="phoneTf" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="175.0" prefHeight="52.0" prefWidth="444.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="243.0" text="Organization Name: " textFill="WHITE">
+                     <font>
+                        <Font name="Copperplate" size="20.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="orgNameTf" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#saveProfile" prefHeight="40.0" prefWidth="87.0" text="Save">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="cancelBtn" mnemonicParsing="false" onAction="#cancelProfile" prefHeight="41.0" prefWidth="96.0" text="Cancel" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
