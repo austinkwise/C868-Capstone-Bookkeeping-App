@@ -38,7 +38,10 @@ public class ProfileController {
         String phone = phoneTf.getText();
         String email = emailTf.getText();
         String orgName = orgNameTf.getText();
+
         int userId = currentUser.getUserId();
+
+        System.out.println("userId: " + userId + " saveProfile() in ProfileController");
 
         boolean saveSuccessful = false;
         saveSuccessful = myDb.updateUser(username, name, phone, email, orgName, userId);
@@ -53,5 +56,4 @@ public class ProfileController {
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         stage.close();
     }
-
 }

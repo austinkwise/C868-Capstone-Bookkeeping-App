@@ -31,6 +31,8 @@ public class SignInController {
         User currentUser;
         currentUser = myDb.signInUser(usernameEmail, password);
 
+        System.out.println("userId: " + currentUser.getUserId() + " setUpSignIn() in SignInController");
+
         myBk.showMainApp(currentUser);
     }
 

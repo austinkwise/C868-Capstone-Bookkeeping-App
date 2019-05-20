@@ -2,6 +2,7 @@ package main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 public class Bookkeeper extends Application {
     private Stage stage;
+    MainPageController mainPage;
 
     @Override
     public void start(Stage stage) throws Exception{
@@ -23,8 +25,10 @@ public class Bookkeeper extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/SignIn.fxml"));
         GridPane pane = loader.load();
+
         SignInController controller = loader.getController();
         controller.setupSignIn(this);
+
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
@@ -34,8 +38,10 @@ public class Bookkeeper extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/SignUp.fxml"));
         GridPane pane = loader.load();
+
         SignUpController controller = loader.getController();
         controller.setupSignUp(this);
+
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
@@ -45,8 +51,12 @@ public class Bookkeeper extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/MainPage.fxml"));
         AnchorPane pane = loader.load();
+
+        System.out.println("userId: " + currentUser.getUserId() + " showMainApp() in Bookkeeper");
+
         MainPageController controller = loader.getController();
         controller.setupMainApp(this, currentUser);
+
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();

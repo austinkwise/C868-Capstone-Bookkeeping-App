@@ -28,19 +28,20 @@
                                           <Label prefHeight="45.0" prefWidth="217.0" text="Assets" textFill="WHITE" />
                                        </children>
                                     </HBox>
-                                    <Button mnemonicParsing="false" text="Edit">
+                                    <Button mnemonicParsing="false" onAction="#editAssetAccount" text="Edit">
                                        <HBox.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </HBox.margin>
                                     </Button>
                                  </children>
                               </HBox>
-                              <TableView prefHeight="462.0" prefWidth="796.0" style="-fx-background-color: #434447;">
+                              <TableView fx:id="assetTable" prefHeight="462.0" prefWidth="796.0" style="-fx-background-color: #434447;">
                                 <columns>
-                                  <TableColumn prefWidth="175.0" text="Status" />
-                                  <TableColumn prefWidth="156.0" text="Name" />
-                                    <TableColumn prefWidth="129.0" text="ID" />
-                                    <TableColumn prefWidth="335.0" text="Description" />
+                                    <TableColumn fx:id="idAssetColumn" prefWidth="94.0" text="ID" />
+                                    <TableColumn fx:id="accountTypeAssetColumn" prefWidth="183.0" text="Account Type" />
+                                  <TableColumn fx:id="nameAssetColumn" prefWidth="163.0" text="Name" />
+                                    <TableColumn fx:id="descriptionAssetColumn" prefWidth="194.0" text="Description" />
+                                  <TableColumn fx:id="statusAssetColumn" prefWidth="161.0" text="Archived/Status" />
                                 </columns>
                                  <VBox.margin>
                                     <Insets left="5.0" right="5.0" />
@@ -52,154 +53,6 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Liabilities">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="532.0" prefWidth="806.0">
-                           <children>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="806.0">
-                                 <children>
-                                    <HBox prefHeight="45.0" prefWidth="711.0">
-                                       <children>
-                                          <Label prefHeight="45.0" prefWidth="217.0" text="Liabilities" textFill="WHITE" />
-                                       </children>
-                                    </HBox>
-                                    <Button mnemonicParsing="false" text="Edit">
-                                       <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                              <TableView prefHeight="462.0" prefWidth="796.0" style="-fx-background-color: #434447;">
-                                 <columns>
-                                    <TableColumn prefWidth="175.0" text="Status" />
-                                    <TableColumn prefWidth="156.0" text="Name" />
-                                    <TableColumn prefWidth="129.0" text="ID" />
-                                    <TableColumn prefWidth="335.0" text="Description" />
-                                 </columns>
-                                 <VBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </VBox.margin>
-                              </TableView>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Income">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="532.0" prefWidth="806.0">
-                           <children>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="806.0">
-                                 <children>
-                                    <HBox prefHeight="45.0" prefWidth="711.0">
-                                       <children>
-                                          <Label prefHeight="45.0" prefWidth="217.0" text="Income" textFill="WHITE" />
-                                       </children>
-                                    </HBox>
-                                    <Button mnemonicParsing="false" text="Edit">
-                                       <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                              <TableView prefHeight="462.0" prefWidth="796.0" style="-fx-background-color: #434447;">
-                                 <columns>
-                                    <TableColumn prefWidth="175.0" text="Status" />
-                                    <TableColumn prefWidth="156.0" text="Name" />
-                                    <TableColumn prefWidth="129.0" text="ID" />
-                                    <TableColumn prefWidth="335.0" text="Description" />
-                                 </columns>
-                                 <VBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </VBox.margin>
-                              </TableView>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Expenses">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="532.0" prefWidth="806.0">
-                           <children>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="806.0">
-                                 <children>
-                                    <HBox prefHeight="45.0" prefWidth="711.0">
-                                       <children>
-                                          <Label prefHeight="45.0" prefWidth="217.0" text="Expenses" textFill="WHITE" />
-                                       </children>
-                                    </HBox>
-                                    <Button mnemonicParsing="false" text="Edit">
-                                       <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                              <TableView prefHeight="462.0" prefWidth="796.0" style="-fx-background-color: #434447;">
-                                 <columns>
-                                    <TableColumn prefWidth="175.0" text="Status" />
-                                    <TableColumn prefWidth="156.0" text="Name" />
-                                    <TableColumn prefWidth="129.0" text="ID" />
-                                    <TableColumn prefWidth="335.0" text="Description" />
-                                 </columns>
-                                 <VBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </VBox.margin>
-                              </TableView>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Equity">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <VBox prefHeight="532.0" prefWidth="806.0">
-                           <children>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="806.0">
-                                 <children>
-                                    <HBox prefHeight="45.0" prefWidth="711.0">
-                                       <children>
-                                          <Label prefHeight="45.0" prefWidth="217.0" text="Equity" textFill="WHITE" />
-                                       </children>
-                                    </HBox>
-                                    <Button mnemonicParsing="false" text="Edit">
-                                       <HBox.margin>
-                                          <Insets left="5.0" right="5.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                 </children>
-                              </HBox>
-                              <TableView prefHeight="462.0" prefWidth="796.0" style="-fx-background-color: #434447;">
-                                 <columns>
-                                    <TableColumn prefWidth="175.0" text="Status" />
-                                    <TableColumn prefWidth="156.0" text="Name" />
-                                    <TableColumn prefWidth="129.0" text="ID" />
-                                    <TableColumn prefWidth="335.0" text="Description" />
-                                 </columns>
-                                 <VBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </VBox.margin>
-                              </TableView>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
         </tabs>
       </TabPane>
       <Button layoutX="693.0" layoutY="14.0" mnemonicParsing="false" onAction="#addNewAccount" text="Add a New Account" />

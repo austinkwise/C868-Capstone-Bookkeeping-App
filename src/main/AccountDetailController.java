@@ -14,16 +14,17 @@ public class AccountDetailController {
     private User currentUser;
     private Bookkeeper myBk;
     private DBHelper myDb;
+    private ProfileController profile;
 
     @FXML private Button cancelBtn, saveBtn;
     @FXML private ComboBox<String> accountsCb, accountTypeCb;
     @FXML private TextField accountNameTf, accountIdTf;
     @FXML private TextArea descriptionTa;
     @FXML private CheckBox archiveAccountCheck;
-    int userId;
 
     public void setupAccountDetail(User currentUser){
-        this.currentUser = currentUser;
+        //this.currentUser = currentUser;
+        //System.out.println(currentUser.getUserId());
 
         accountsCb.setItems(accounts);
         setAccountTypes();
@@ -33,7 +34,6 @@ public class AccountDetailController {
 
     private void setAccountTypes(){
         accountsCb.getSelectionModel().selectedItemProperty().addListener( (options, oldAccount, newAccount) -> {
-                    System.out.println(newAccount);
                     int idx = accountsCb.getSelectionModel().getSelectedIndex();
                     switchAccountType(idx);
                 }
@@ -42,7 +42,6 @@ public class AccountDetailController {
 
     private void switchAccountType(int idx){
         ObservableList<String> accountType = FXCollections.observableArrayList("");
-        System.out.println(idx);
 
         switch (idx){
             case 0:
@@ -69,7 +68,6 @@ public class AccountDetailController {
     @FXML
     private void saveClick() throws SQLException, ClassNotFoundException {
 
-
         String accounts = accountsCb.getSelectionModel().getSelectedItem();
         String accountType = accountTypeCb.getSelectionModel().getSelectedItem();
         String accountName = accountNameTf.getText();
@@ -77,8 +75,7 @@ public class AccountDetailController {
         String description = descriptionTa.getText();
         int archiveAccount = 0;
 
-        //int userId = currentUser.getUserId();
-        int userId = this.userId;
+        int userId = currentUser.getUserId();
 
         boolean isArchived = archiveAccountCheck.isSelected();
         if (isArchived){

@@ -1,8 +1,13 @@
 package main.Helpers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import main.Model.Account;
 import main.Model.User;
 
+import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.List;
 
 public class DBHelper {
     /**
@@ -81,7 +86,7 @@ public class DBHelper {
             rs = pst.executeQuery();
         }
 
-        if(rs.next()){
+        while(rs.next()){
             String passwordHolder = rs.getString("password");
             if(passwordHolder.contentEquals(password)){
                 user.setUsername(rs.getString("username"));
@@ -94,7 +99,6 @@ public class DBHelper {
             }else{
                 return null;
             }
-
         }
         return user;
     }
@@ -115,5 +119,31 @@ public class DBHelper {
         conn.close();
 
         return true;
+    }
+
+    public static List<Account> getAssetData(int userId) throws SQLException, ClassNotFoundException {
+        ObservableList<Account> assetAccountList = FXCollections.observableArrayList();
+        ResultSet rs;
+
+        String assetQuery = "SELECT * FROM accounts WHERE account = Asset Account AND userId = ?;";
+
+        init();
+        PreparedStatement pst = conn.prepareStatement(assetQuery);
+        pst.setInt(1, userId);
+        rs = pst.executeQuery();
+
+        while(rs.next()){
+            Integer accountId = rs.getInt("accountId");
+            String account = rs.getString("account");
+            String accountType = rs.getString("accountType");
+            String accountName = rs.getString("accountName");
+            String accountDescription = rs.getString("accountDescription");
+            int archiveAccount = rs.getInt("archiveAccount");
+            int userIdDb = rs.getInt("userId");
+            assetAccountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
+        }
+        conn.close();
+
+        return assetAccountList;
     }
 }

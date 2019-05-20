@@ -16,6 +16,7 @@ import main.Bookkeeper;
 import main.Model.User;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -23,7 +24,7 @@ public class MainPageController {
     private Bookkeeper myBk;
     private User currentUser;
     @FXML private AnchorPane sideMenu;
-    @FXML private StackPane mainArea;
+    @FXML public StackPane mainArea;
     @FXML private Label orgLabel;
     @FXML private Label pageLabel;
     @FXML private Label nameLabel;
@@ -32,6 +33,8 @@ public class MainPageController {
     public void setupMainApp(Bookkeeper myBk, User currentUser) throws IOException {
         this.myBk = myBk;
         this.currentUser = currentUser;
+
+        System.out.println("userId: " + this.currentUser.getUserId() + " setupMainApp() in MainPageController");
 
         orgLabel.setText(currentUser.getOrgName());
         nameLabel.setText(currentUser.getName());
@@ -50,6 +53,9 @@ public class MainPageController {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/Transactions.fxml"));
         loader.load();
+
+        System.out.println("userId: " + this.currentUser.getUserId() + " showTransactions() in MainPageController");
+
         TransactionsController controller = loader.getController();
         controller.setupTransactions(currentUser);
 
@@ -58,12 +64,15 @@ public class MainPageController {
         mainArea.getChildren().setAll(node);
     }
 
-    @FXML private void showChartOfAccounts() throws IOException {
+    @FXML private void showChartOfAccounts() throws IOException, SQLException, ClassNotFoundException {
         pageLabel.setText("Chart Of Accounts");
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
         loader.load();
+
+        System.out.println("userId: " + currentUser.getUserId() + " showChartOfAccounts() in MainPageController");
+
         ChartOfAccountsController controller = loader.getController();
         controller.setupChartOfAccounts(currentUser);
 

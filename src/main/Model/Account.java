@@ -7,16 +7,20 @@ public class Account {
     private String accountName;
     private String accountDescription;
     private int archiveAccount;
+    private int userId;
 
 
-    public Account(int accountId, String account, String accountType, String accountName, String accountDescription, int archiveAccount) {
+    public Account(int accountId, String account, String accountType, String accountName, String accountDescription, int archiveAccount, int userId) {
         this.accountId = accountId;
         this.account = account;
         this.accountType = accountType;
         this.accountName = accountName;
         this.accountDescription = accountDescription;
         this.archiveAccount = archiveAccount;
+        this.userId = userId;
     }
+
+    public Account(){};
 
     public int getAccountId() {
         return accountId;
@@ -64,5 +68,13 @@ public class Account {
 
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
