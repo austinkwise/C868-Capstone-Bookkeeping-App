@@ -94,7 +94,7 @@
             </TextArea>
             <HBox alignment="CENTER" prefHeight="81.0" prefWidth="500.0">
                <children>
-                  <Button mnemonicParsing="false" text="Save">
+                  <Button mnemonicParsing="false" text="TestClick">
                      <font>
                         <Font name="Copperplate" size="14.0" />
                      </font>

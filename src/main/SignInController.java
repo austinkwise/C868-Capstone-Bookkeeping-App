@@ -3,6 +3,8 @@ package main;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import main.Bookkeeper;
 import main.Helpers.DBHelper;
@@ -35,6 +37,8 @@ public class SignInController {
 
         myBk.showMainApp(currentUser);
     }
+
+
 
 
     @FXML private void signUpClicked(ActionEvent e) throws IOException {

@@ -13,7 +13,7 @@
     <children>
         <ToolBar prefHeight="50.0" prefWidth="900.0" style="-fx-background-color: #2b2b2d; -fx-border-color: #00b894;">
             <items>
-                <Button mnemonicParsing="false" onAction="#showProfile" prefHeight="27.0" prefWidth="87.0" style="-fx-background-color: #434447;" text="Profile" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#profileClick" prefHeight="27.0" prefWidth="87.0" style="-fx-background-color: #434447;" text="Profile" textFill="WHITE">
                     <font>
                         <Font name="Copperplate" size="14.0" />
                     </font>
@@ -53,7 +53,7 @@
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="276.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#signOutClicked" style="-fx-background-color: #434447;" text="-&gt;]" textFill="WHITE">
+                        <Button mnemonicParsing="false" onAction="#signOutClick" style="-fx-background-color: #434447;" text="-&gt;]" textFill="WHITE">
                             <font>
                                 <Font name="Copperplate" size="14.0" />
                             </font>
@@ -74,17 +74,17 @@
             <children>
                 <VBox prefHeight="600.0" prefWidth="150.0" style="-fx-border-color: #00b894;">
                     <children>
-                          <Button mnemonicParsing="false" onAction="#showTransactions" prefHeight="27.0" prefWidth="150.0" style="-fx-background-color: #434447;" text="Transactions" textFill="WHITE">
+                          <Button mnemonicParsing="false" onAction="#transactionsCLick" prefHeight="27.0" prefWidth="150.0" style="-fx-background-color: #434447;" text="Transactions" textFill="WHITE">
                               <font>
                                   <Font name="Copperplate" size="14.0" />
                               </font>
                           </Button>
-                          <Button mnemonicParsing="false" onAction="#showChartOfAccounts" prefHeight="27.0" prefWidth="148.0" style="-fx-background-color: #434447;" text="Chart of Accounts" textFill="WHITE">
+                          <Button mnemonicParsing="false" onAction="#chartOfAccountsClick" prefHeight="27.0" prefWidth="148.0" style="-fx-background-color: #434447;" text="Chart of Accounts" textFill="WHITE">
                               <font>
                                   <Font name="Copperplate" size="13.0" />
                               </font>
                           </Button>
-                          <Button mnemonicParsing="false" onAction="#showReports" prefHeight="27.0" prefWidth="150.0" style="-fx-background-color: #434447;" text="Reports" textFill="WHITE">
+                          <Button mnemonicParsing="false" onAction="#reportsClick" prefHeight="27.0" prefWidth="150.0" style="-fx-background-color: #434447;" text="Reports" textFill="WHITE">
                               <font>
                                   <Font name="Copperplate" size="14.0" />
                               </font>

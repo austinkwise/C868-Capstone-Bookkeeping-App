@@ -1,24 +1,16 @@
 package main;
 
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import main.Bookkeeper;
 import main.Model.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class MainPageController {
     private Bookkeeper myBk;
@@ -39,72 +31,35 @@ public class MainPageController {
         orgLabel.setText(currentUser.getOrgName());
         nameLabel.setText(currentUser.getName());
 
-        showTransactions();
+        transactionsCLick();
         movePane();
     }
 
-    @FXML private void signOutClicked() throws IOException {
+    @FXML private void signOutClick() throws IOException {
         myBk.showSignIn();
     }
 
-    @FXML private void showTransactions() throws IOException {
+    @FXML private void transactionsCLick() throws IOException {
         pageLabel.setText("Transactions");
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/Transactions.fxml"));
-        loader.load();
-
-        System.out.println("userId: " + this.currentUser.getUserId() + " showTransactions() in MainPageController");
-
-        TransactionsController controller = loader.getController();
-        controller.setupTransactions(currentUser);
-
-        Node node;
-        node = FXMLLoader.load(getClass().getResource("/fxml/Transactions.fxml"));
-        mainArea.getChildren().setAll(node);
+        myBk.showTransactions();
     }
 
-    @FXML private void showChartOfAccounts() throws IOException, SQLException, ClassNotFoundException {
+    @FXML private void chartOfAccountsClick() throws IOException, SQLException, ClassNotFoundException {
         pageLabel.setText("Chart Of Accounts");
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
-        loader.load();
-
-        System.out.println("userId: " + currentUser.getUserId() + " showChartOfAccounts() in MainPageController");
-
-        ChartOfAccountsController controller = loader.getController();
-        controller.setupChartOfAccounts(currentUser);
-
-        Node node;
-        node = FXMLLoader.load(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
-        mainArea.getChildren().setAll(node);
+        myBk.showChartofAccounts();
     }
 
-    @FXML private void showReports() throws IOException {
+    @FXML private void reportsClick() throws IOException {
         pageLabel.setText("Reports");
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/Reports.fxml"));
-        loader.load();
-        ReportsController controller = loader.getController();
-        controller.setupReports(currentUser);
-
-        Node node;
-        node = FXMLLoader.load(getClass().getResource("/fxml/Reports.fxml"));
-        mainArea.getChildren().setAll(node);
+        myBk.showReports();
     }
 
-    @FXML private void showProfile() throws IOException {
+    @FXML private void profileClick() throws IOException {
         pageLabel.setText("Profile");
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml"));
-        Parent root = loader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.show();
-        ProfileController controller = loader.getController();
-        controller.setProfile(currentUser);
+
+        System.out.println(currentUser + ", " + currentUser.getUserId() + ", " + currentUser.getEmail());
+        myBk.showProfile();
     }
 
 

@@ -11,17 +11,17 @@ import java.util.List;
 
 public class DBHelper {
     /**
-     *Server name:127.0.0.1
-     * Database name: TheApp
-     * Username: root
-     * Password: charlie0912
+     * Server name:remotemysql.com
+     * Database name: otiq5otJUM
+     * Username: otiq5otJUM
+     * Password: YPJAAuQ8vJ
      *
      * @author austinwise
      */
-    private static final String databaseName = "crmdb";
-    private static final String DB_URL = "jdbc:mysql://127.0.0.1/" + databaseName + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private static final String user = "root";
-    private static final String pass = "charlie0912";
+    private static final String databaseName = "otiq5otJUM";
+    private static final String DB_URL = "jdbc:mysql://remotemysql.com/" + databaseName + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static final String user = "otiq5otJUM";
+    private static final String pass = "YPJAAuQ8vJ";
     private static final String driver = "com.mysql.cj.jdbc.Driver";
 
     private static Connection conn;
@@ -100,6 +100,7 @@ public class DBHelper {
                 return null;
             }
         }
+        System.out.println(user + "signInUser() in DBHelper");
         return user;
     }
 

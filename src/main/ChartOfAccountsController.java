@@ -1,7 +1,5 @@
 package main;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,9 +13,7 @@ import main.Model.Account;
 import main.Model.User;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 public class ChartOfAccountsController {
     private User currentUser;

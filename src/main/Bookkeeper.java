@@ -2,7 +2,7 @@ package main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -10,10 +10,12 @@ import javafx.stage.Stage;
 import main.Model.User;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Bookkeeper extends Application {
     private Stage stage;
-    MainPageController mainPage;
+    private MainPageController mainPageController;
+    private User currentUser;
 
     @Override
     public void start(Stage stage) throws Exception{
@@ -52,14 +54,77 @@ public class Bookkeeper extends Application {
         loader.setLocation(getClass().getResource("/fxml/MainPage.fxml"));
         AnchorPane pane = loader.load();
 
-        System.out.println("userId: " + currentUser.getUserId() + " showMainApp() in Bookkeeper");
+        this.currentUser = currentUser;
+        System.out.println("userId: " + this.currentUser.getUserId() + " showMainApp() in Bookkeeper");
 
-        MainPageController controller = loader.getController();
-        controller.setupMainApp(this, currentUser);
+        mainPageController = loader.getController();
+        mainPageController.setupMainApp(this, this.currentUser);
 
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void showTransactions() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/Transactions.fxml"));
+        loader.load();
+
+        System.out.println("userId: " + currentUser.getUserId() + " showTransactions() in Bookkeeper");
+
+        TransactionsController controller = loader.getController();
+        controller.setupTransactions(this, currentUser);
+
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("/fxml/Transactions.fxml"));
+        mainPageController.mainArea.getChildren().setAll(pane);
+    }
+
+    public void showTransactionDetail() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/TransactionDetail.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+
+        TransactionDetailController controller = loader.getController();
+        controller.setupTransactionDetail(currentUser);
+
+        stage.show();
+    }
+
+    public void showChartofAccounts() throws IOException, SQLException, ClassNotFoundException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
+        loader.load();
+
+        System.out.println("userId: " + currentUser.getUserId() + " showChartOfAccounts() in Bookkeeper");
+
+        ChartOfAccountsController controller = loader.getController();
+        controller.setupChartOfAccounts(currentUser);
+
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
+        mainPageController.mainArea.getChildren().setAll(pane);
+    }
+
+    public void showReports() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/Reports.fxml"));
+        loader.load();
+        ReportsController controller = loader.getController();
+        controller.setupReports(currentUser);
+
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("/fxml/Reports.fxml"));
+        mainPageController.mainArea.getChildren().setAll(pane);
+    }
+
+    public void showProfile() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Profile.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+        ProfileController controller = loader.getController();
+        controller.setProfile(currentUser);
     }
 
     public static void main(String[] args) {
