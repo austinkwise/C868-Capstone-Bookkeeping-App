@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.Helpers.DBHelper;
+import main.Helpers.DBConnection;
 import main.Model.User;
 
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ public class ProfileController {
     private TextField usernameTf, nameTf, phoneTf, emailTf, orgNameTf;
     @FXML private Button saveBtn, cancelBtn;
     private User currentUser;
-    private DBHelper myDb;
+    private DBConnection myDb;
 
     public void setProfile(User currentUser){
         this.currentUser = currentUser;

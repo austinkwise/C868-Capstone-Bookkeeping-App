@@ -100,7 +100,7 @@ public class Bookkeeper extends Application {
         System.out.println("userId: " + currentUser.getUserId() + " showChartOfAccounts() in Bookkeeper");
 
         ChartOfAccountsController controller = loader.getController();
-        controller.setupChartOfAccounts(currentUser);
+        controller.setupChartOfAccounts(currentUser, this);
 
         AnchorPane pane = FXMLLoader.load(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
         mainPageController.mainArea.getChildren().setAll(pane);
@@ -125,6 +125,19 @@ public class Bookkeeper extends Application {
         stage.show();
         ProfileController controller = loader.getController();
         controller.setProfile(currentUser);
+    }
+
+    public void showAccountDetail() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/fxml/AccountDetail.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+
+        AccountDetailController controller = loader.getController();
+        controller.setupAccountDetail(currentUser);
+
+        stage.show();
     }
 
     public static void main(String[] args) {

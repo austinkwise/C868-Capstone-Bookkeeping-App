@@ -9,7 +9,7 @@ import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.List;
 
-public class DBHelper {
+public class DBConnection {
     /**
      * Server name:remotemysql.com
      * Database name: otiq5otJUM
@@ -100,7 +100,7 @@ public class DBHelper {
                 return null;
             }
         }
-        System.out.println(user + "signInUser() in DBHelper");
+        System.out.println(user + "signInUser() in DBConnection");
         return user;
     }
 
@@ -122,6 +122,98 @@ public class DBHelper {
         return true;
     }
 
+    public static boolean updateAccount(String accounts, String accountType, String accountName, int accountId, String description, int archiveAccount, int userId) throws SQLException, ClassNotFoundException {
+        String statement = "UPDATE account SET accountId = ?, account = ?, accountType = ?, accountName = ?, accountDescription = ?, archiveAccount = ? WHERE accountId = ? AND userId = ?";
+
+        init();
+        PreparedStatement pst = conn.prepareStatement(statement);
+        pst.setInt(1, accountId);
+        pst.setString(2, accounts);
+        pst.setString(3, accountType);
+        pst.setString(4, accountName);
+        pst.setString(5, description);
+        pst.setInt(6, archiveAccount);
+        pst.setInt(7, accountId);
+        pst.setInt(8, userId);
+        pst.execute();
+        conn.close();
+
+        return true;
+    }
+
+    public static List<Account> getAccountData(int userId, int accounts) throws SQLException, ClassNotFoundException {
+        ObservableList<Account> accountList = FXCollections.observableArrayList();
+        ResultSet rs;
+
+        String accountSwitch = "";
+
+        switch (accounts){
+            case 1:
+                //Asset Table
+                accountSwitch = "'AssetAccount'";
+                break;
+            case 2:
+                //Liability Table
+                accountSwitch = "'Liability Account'";
+                break;
+            case 3:
+                //Income Table
+                accountSwitch = "'Income Account'";
+                break;
+            case 4:
+                //Expense Table
+                accountSwitch = "'Expense Account'";
+                break;
+            case 5:
+                //Equity Table
+                accountSwitch = "'Equity Account'";
+            default:
+                break;
+        }
+
+        String assetQuery = "SELECT * FROM accounts WHERE account = ? AND userId = ?;";
+
+        PreparedStatement pst = getConn().prepareStatement(assetQuery);
+        pst.setString(1, accountSwitch);
+        pst.setInt(2, userId);
+
+        rs = pst.executeQuery();
+
+        while(rs.next()){
+            String accountId = rs.getString("accountId");
+            String account = rs.getString("account");
+            String accountType = rs.getString("accountType");
+            String accountName = rs.getString("accountName");
+            String accountDescription = rs.getString("accountDescription");
+            String archiveAccount = rs.getString("archiveAccount");
+            String userIdDb = rs.getString("userId");
+            accountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
+        }
+        return accountList;
+    }
+
+    public static List<Account> getLiabilityData(int userId) throws SQLException, ClassNotFoundException {
+        ObservableList<Account> accountList = FXCollections.observableArrayList();
+        ResultSet rs;
+
+        String assetQuery = "SELECT * FROM accounts WHERE account = 'Liability Account' AND userId = ?;";
+
+        PreparedStatement pst = getConn().prepareStatement(assetQuery);
+        pst.setInt(1, userId);
+        rs = pst.executeQuery();
+
+        while(rs.next()){
+            String accountId = rs.getString("accountId");
+            String account = rs.getString("account");
+            String accountType = rs.getString("accountType");
+            String accountName = rs.getString("accountName");
+            String accountDescription = rs.getString("accountDescription");
+            String archiveAccount = rs.getString("archiveAccount");
+            String userIdDb = rs.getString("userId");
+            accountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
+        }
+        return accountList;
+    }
 
 
     public static Connection getConn(){

@@ -55,10 +55,6 @@ public class MainPageController {
     }
 
     @FXML private void profileClick() throws IOException {
-        pageLabel.setText("Profile");
-
-
-        System.out.println(currentUser + ", " + currentUser.getUserId() + ", " + currentUser.getEmail());
         myBk.showProfile();
     }
 

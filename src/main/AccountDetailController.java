@@ -5,7 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import main.Helpers.DBHelper;
+import main.Helpers.DBConnection;
+import main.Model.Account;
 import main.Model.User;
 
 import java.sql.SQLException;
@@ -13,8 +14,9 @@ import java.sql.SQLException;
 public class AccountDetailController {
     private static User currentUser;
     private static Bookkeeper myBk;
-    private DBHelper myDb;
+    private DBConnection myDb;
     private ProfileController profile;
+    private static Account accountModSelected;
 
     @FXML private Button cancelBtn, saveBtn;
     @FXML private ComboBox<String> accountsCb, accountTypeCb;
@@ -24,10 +26,25 @@ public class AccountDetailController {
 
     public void setupAccountDetail(User user){
         currentUser = user;
-        System.out.println(currentUser.getUserId());
 
-        accountsCb.setItems(accounts);
-        setAccountTypes();
+        accountModSelected = ChartOfAccountsController.getSelectedAccount();
+
+        if(accountModSelected == null){
+            accountsCb.setItems(accounts);
+            setAccountTypes();
+        }else{
+            accountsCb.setItems(accounts);
+            setAccountTypes();
+            
+            accountsCb.getSelectionModel().select(accountModSelected.getAccount());
+            accountTypeCb.getSelectionModel().select(accountModSelected.getAccount());
+            accountNameTf.setText(accountModSelected.getAccountName());
+            accountIdTf.setText(accountModSelected.getAccountId());
+            descriptionTa.setText(accountModSelected.getAccountDescription());
+            if(accountModSelected.getArchiveAccount().contentEquals("1")){
+                archiveAccountCheck.isSelected();
+            }
+        }
     }
 
     ObservableList<String> accounts = FXCollections.observableArrayList("Asset Account", "Liability Account", "Income Account", "Expense Account", "Equity Account");
@@ -67,7 +84,6 @@ public class AccountDetailController {
 
     @FXML
     private void saveClick() throws SQLException, ClassNotFoundException {
-
         String accounts = accountsCb.getSelectionModel().getSelectedItem();
         String accountType = accountTypeCb.getSelectionModel().getSelectedItem();
         String accountName = accountNameTf.getText();
@@ -81,14 +97,24 @@ public class AccountDetailController {
         if (isArchived){
             archiveAccount = 1;
         }
-        boolean saveSuccess;
-        saveSuccess = myDb.saveNewAccount(accounts, accountType, accountName, accountId, description, archiveAccount, userId);
 
-        if(saveSuccess){
-            Stage stage = (Stage) saveBtn.getScene().getWindow();
-            stage.close();
+        if(accountModSelected == null){
+            boolean saveSuccess;
+            saveSuccess = myDb.saveNewAccount(accounts, accountType, accountName, accountId, description, archiveAccount, userId);
+
+            if(saveSuccess){
+                Stage stage = (Stage) saveBtn.getScene().getWindow();
+                stage.close();
+            }
+        }else {
+            boolean saveSuccess;
+            saveSuccess = myDb.updateAccount(accounts, accountType, accountName, accountId, description, archiveAccount, userId);
+
+            if(saveSuccess){
+                Stage stage = (Stage) saveBtn.getScene().getWindow();
+                stage.close();
+            }
         }
-
     }
 
     @FXML private void cancel(){

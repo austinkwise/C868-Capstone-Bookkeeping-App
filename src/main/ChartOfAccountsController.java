@@ -1,27 +1,25 @@
 package main;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-import main.Helpers.DBHelper;
+import main.Helpers.DBConnection;
 import main.Model.Account;
 import main.Model.User;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 public class ChartOfAccountsController {
     private static User currentUser;
+    private static Bookkeeper myBk;
+    private static Account accountModSelected;
+
+    private static Account liabilityAccountModSelected;
+    private static Account incomeAccountModSelected;
+    private static Account expenseAccountModSelected;
+    private static Account equityAccountModSelected;
 
     @FXML private TableView<Account> assetTable;
     @FXML private TableColumn<Account, String> idAssetColumn;
@@ -30,101 +28,124 @@ public class ChartOfAccountsController {
     @FXML private TableColumn<Account, String> descriptionAssetColumn;
     @FXML private TableColumn<Account, String> statusAssetColumn;
 
+    @FXML private TableView<Account> liabilityTable;
+    @FXML private TableColumn<Account, String> idLiabilityColumn;
+    @FXML private TableColumn<Account, String> accountTypeLiabilityColumn;
+    @FXML private TableColumn<Account, String> nameLiabilityColumn;
+    @FXML private TableColumn<Account, String> descriptionLiabilityColumn;
+    @FXML private TableColumn<Account, String> statusLiabilityColumn;
 
-    public void setupChartOfAccounts(User user) throws SQLException, ClassNotFoundException {
+    @FXML private TableView<Account> incomeTable;
+    @FXML private TableColumn<Account, String> idIncomeColumn;
+    @FXML private TableColumn<Account, String> accountTypeIncomeColumn;
+    @FXML private TableColumn<Account, String> nameIncomeColumn;
+    @FXML private TableColumn<Account, String> descriptionIncomeColumn;
+    @FXML private TableColumn<Account, String> statusIncomeColumn;
+
+    @FXML private TableView<Account> expenseTable;
+    @FXML private TableColumn<Account, String> idExpenseColumn;
+    @FXML private TableColumn<Account, String> accountTypeExpenseColumn;
+    @FXML private TableColumn<Account, String> nameExpenseColumn;
+    @FXML private TableColumn<Account, String> descriptionExpenseColumn;
+    @FXML private TableColumn<Account, String> statusExpenseColumn;
+
+    @FXML private TableView<Account> equityTable;
+    @FXML private TableColumn<Account, String> idEquityColumn;
+    @FXML private TableColumn<Account, String> accountTypeEquityColumn;
+    @FXML private TableColumn<Account, String> nameEquityColumn;
+    @FXML private TableColumn<Account, String> descriptionEquityColumn;
+    @FXML private TableColumn<Account, String> statusEquityColumn;
+
+    public void setupChartOfAccounts(User user, Bookkeeper bookkeeper) throws SQLException, ClassNotFoundException {
         currentUser = user;
-        //populateTables();
+        myBk = bookkeeper;
 
-        idAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
-        accountTypeAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
-        nameAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
-        descriptionAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
-        statusAssetColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
-        assetTable.getItems().setAll(getAssetData(currentUser.getUserId()));
+        populateTables();
     }
 
-    @FXML private void addNewAccount() throws IOException{
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/AccountDetail.fxml"));
-        Parent root = loader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-
-        AccountDetailController controller = loader.getController();
-        controller.setupAccountDetail(currentUser);
-
-        stage.show();
+    @FXML private void addAccountClick() throws IOException{
+        myBk.showAccountDetail();
     }
 
     @FXML private void editAssetAccount() throws IOException{
+        setSelectedAccount(assetTable.getSelectionModel().getSelectedItem());
 
+        if(accountModSelected == null){
+            System.out.println("pick an account");
+        }else{
+            myBk.showAccountDetail();
+        }
     }
 
     @FXML private void editLiabilityAccount() throws IOException{
+        liabilityAccountModSelected = liabilityTable.getSelectionModel().getSelectedItem();
     }
 
     @FXML private void editIncomeAccount() throws IOException{
+        incomeAccountModSelected = incomeTable.getSelectionModel().getSelectedItem();
     }
 
 
     @FXML private void editExpenseAccount() throws IOException{
+        expenseAccountModSelected = expenseTable.getSelectionModel().getSelectedItem();
     }
 
-
     @FXML private void editEquityAccount() throws IOException{
+        equityAccountModSelected = equityTable.getSelectionModel().getSelectedItem();
     }
 
     private void populateTables() throws SQLException, ClassNotFoundException {
         //ASSET TABLE
-        ObservableList<Account> assetAccountList = FXCollections.observableArrayList(getAssetData(currentUser.getUserId()));
-        for(Account a : assetAccountList){
-            System.out.println(a.getAccountName() + ", " + a.getAccountId());
-        }
-        assetTable.setItems(assetAccountList);
-
         idAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
         accountTypeAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
         nameAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
         descriptionAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
         statusAssetColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
 
-        assetTable.getColumns().setAll(idAssetColumn, accountTypeAssetColumn, nameAssetColumn, descriptionAssetColumn, statusAssetColumn);
-        /*
+        assetTable.getItems().setAll(DBConnection.getAccountData(currentUser.getUserId(), 1));
         //LIABILITY TABLE
-        populateLiabilityTable();
+        idLiabilityColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
+        accountTypeLiabilityColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
+        nameLiabilityColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
+        descriptionLiabilityColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
+        statusLiabilityColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
+
+        liabilityTable.getItems().setAll(DBConnection.getAccountData(currentUser.getUserId(), 2));
         //INCOME TABLE
-        populateIncomeTable();
+        idIncomeColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
+        accountTypeIncomeColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
+        nameIncomeColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
+        descriptionIncomeColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
+        statusIncomeColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
+
+        incomeTable.getItems().setAll(DBConnection.getAccountData(currentUser.getUserId(), 3));
         //EXPENSE TABLE
-        populateExpenseTable();
+        idExpenseColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
+        accountTypeExpenseColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
+        nameExpenseColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
+        descriptionExpenseColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
+        statusExpenseColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
+
+        expenseTable.getItems().setAll(DBConnection.getAccountData(currentUser.getUserId(), 4));
         //EQUITY TABLE
-        populateEquityTable();`
-         */
+        idEquityColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
+        accountTypeEquityColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
+        nameEquityColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
+        descriptionEquityColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
+        statusEquityColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
+
+        equityTable.getItems().setAll(DBConnection.getAccountData(currentUser.getUserId(), 5));
     }
 
-    public List<Account> getAssetData(int userId) throws SQLException, ClassNotFoundException {
-        ObservableList<Account> assetAccountList = FXCollections.observableArrayList();
-        ResultSet rs;
+    public static Account getSelectedAccount(){
+        return accountModSelected;
+    }
 
-        String assetQuery = "SELECT * FROM accounts WHERE account = 'Asset Account' AND userId = ?;";
+    public static void setSelectedAccount(Account account){
+        accountModSelected = account;
+    }
 
-
-        PreparedStatement pst = DBHelper.getConn().prepareStatement(assetQuery);
-        pst.setInt(1, userId);
-        rs = pst.executeQuery();
-
-        while(rs.next()){
-            String accountId = rs.getString("accountId");
-            String account = rs.getString("account");
-            String accountType = rs.getString("accountType");
-            String accountName = rs.getString("accountName");
-            String accountDescription = rs.getString("accountDescription");
-            String archiveAccount = rs.getString("archiveAccount");
-            String userIdDb = rs.getString("userId");
-            assetAccountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
-        }
-
-
-        return assetAccountList;
+    public static void resetSelectedAccount(){
+        accountModSelected = null;
     }
 }

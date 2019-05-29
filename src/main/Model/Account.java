@@ -9,7 +9,6 @@ public class Account {
     private String archiveAccount;
     private String userId;
 
-
     public Account(String accountId, String account, String accountType, String accountName, String accountDescription, String archiveAccount, String userId) {
         this.accountId = accountId;
         this.account = account;
@@ -20,8 +19,6 @@ public class Account {
         this.userId = userId;
     }
 
-    public Account(){};
-
     public String getAccountId() {
         return accountId;
     }
@@ -30,12 +27,12 @@ public class Account {
         this.accountId = accountId;
     }
 
-    public String getAccountName() {
-        return accountName;
+    public String getAccount() {
+        return account;
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getAccountType() {
@@ -44,6 +41,14 @@ public class Account {
 
     public void setAccountType(String accountType) {
         this.accountType = accountType;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     public String getAccountDescription() {
@@ -60,14 +65,6 @@ public class Account {
 
     public void setArchiveAccount(String archiveAccount) {
         this.archiveAccount = archiveAccount;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
     }
 
     public String getUserId() {

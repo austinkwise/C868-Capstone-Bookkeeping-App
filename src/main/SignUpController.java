@@ -3,15 +3,14 @@ package main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import main.Bookkeeper;
-import main.Helpers.DBHelper;
+import main.Helpers.DBConnection;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class SignUpController {
     private Bookkeeper myBk;
-    private DBHelper myDb;
+    private DBConnection myDb;
     @FXML
     private TextField firstnametf, lastnametf, usernametf, passwordtf, phonetf, emailtf, orgNametf;
 
