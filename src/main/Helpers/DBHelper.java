@@ -122,29 +122,13 @@ public class DBHelper {
         return true;
     }
 
-    public static List<Account> getAssetData(int userId) throws SQLException, ClassNotFoundException {
-        ObservableList<Account> assetAccountList = FXCollections.observableArrayList();
-        ResultSet rs;
 
-        String assetQuery = "SELECT * FROM accounts WHERE account = Asset Account AND userId = ?;";
 
-        init();
-        PreparedStatement pst = conn.prepareStatement(assetQuery);
-        pst.setInt(1, userId);
-        rs = pst.executeQuery();
+    public static Connection getConn(){
+        return conn;
+    }
 
-        while(rs.next()){
-            Integer accountId = rs.getInt("accountId");
-            String account = rs.getString("account");
-            String accountType = rs.getString("accountType");
-            String accountName = rs.getString("accountName");
-            String accountDescription = rs.getString("accountDescription");
-            int archiveAccount = rs.getInt("archiveAccount");
-            int userIdDb = rs.getInt("userId");
-            assetAccountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
-        }
+    public static void closeConn () throws SQLException {
         conn.close();
-
-        return assetAccountList;
     }
 }

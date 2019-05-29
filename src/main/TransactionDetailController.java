@@ -4,12 +4,12 @@ import javafx.fxml.FXML;
 import main.Model.User;
 
 public class TransactionDetailController {
-    private User currentUser;
+    private static User currentUser;
 
-    public void setupTransactionDetail(User currentUser){
-        this.currentUser = currentUser;
+    public void setupTransactionDetail(User user){
+        currentUser = user;
 
-        System.out.println("userId: " + this.currentUser.getUserId() + " setupTransactionDetail() in TransactionDetailController");
+        System.out.println("userId: " + currentUser.getUserId() + " setupTransactionDetail() in TransactionDetailController");
     }
 
     @FXML private void testClick(){

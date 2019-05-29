@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="C868-Capstone-Keeper-App">
+    <output-path>$PROJECT_DIR$/out/artifacts/C868_Capstone_Keeper_App</output-path>
+    <root id="root">
+      <element id="archive" name="C868_Capstone_Keeper_App.jar">
+        <element id="module-output" name="C868-Capstone-Keeper-App" />
+      </element>
+    </root>
+  </artifact>
+</component>

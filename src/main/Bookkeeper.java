@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class Bookkeeper extends Application {
     private Stage stage;
     private MainPageController mainPageController;
-    private User currentUser;
+    private static User currentUser;
 
     @Override
     public void start(Stage stage) throws Exception{

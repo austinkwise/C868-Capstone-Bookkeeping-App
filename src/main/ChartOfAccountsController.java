@@ -1,5 +1,7 @@
 package main;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,28 +15,35 @@ import main.Model.Account;
 import main.Model.User;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ChartOfAccountsController {
-    private User currentUser;
+    private static User currentUser;
 
     @FXML private TableView<Account> assetTable;
-    @FXML private TableColumn<Account, Integer> idAssetColumn;
+    @FXML private TableColumn<Account, String> idAssetColumn;
     @FXML private TableColumn<Account, String> accountTypeAssetColumn;
     @FXML private TableColumn<Account, String> nameAssetColumn;
     @FXML private TableColumn<Account, String> descriptionAssetColumn;
     @FXML private TableColumn<Account, String> statusAssetColumn;
 
 
-    public void setupChartOfAccounts(User currentUser) throws SQLException, ClassNotFoundException {
-        this.currentUser = currentUser;
+    public void setupChartOfAccounts(User user) throws SQLException, ClassNotFoundException {
+        currentUser = user;
         //populateTables();
-        System.out.println("userId: " + this.currentUser.getUserId() + " setupChartOfAccount() in ChartOfAccountsController");
+
+        idAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
+        accountTypeAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
+        nameAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
+        descriptionAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
+        statusAssetColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
+        assetTable.getItems().setAll(getAssetData(currentUser.getUserId()));
     }
 
     @FXML private void addNewAccount() throws IOException{
-        System.out.println("The issue is happening here where the current User object is returning null rather than containing the current users information");
-        System.out.println("userId: " + currentUser.getUserId() + " addNewAccount() in ChartOfAccountsController");
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/AccountDetail.fxml"));
@@ -49,7 +58,7 @@ public class ChartOfAccountsController {
     }
 
     @FXML private void editAssetAccount() throws IOException{
-        System.out.println("userId: " + this.currentUser.getUserId() + " editAssetAccount() in ChartOfAccountsController");
+
     }
 
     @FXML private void editLiabilityAccount() throws IOException{
@@ -68,12 +77,19 @@ public class ChartOfAccountsController {
 
     private void populateTables() throws SQLException, ClassNotFoundException {
         //ASSET TABLE
+        ObservableList<Account> assetAccountList = FXCollections.observableArrayList(getAssetData(currentUser.getUserId()));
+        for(Account a : assetAccountList){
+            System.out.println(a.getAccountName() + ", " + a.getAccountId());
+        }
+        assetTable.setItems(assetAccountList);
+
         idAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
         accountTypeAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
         nameAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
         descriptionAssetColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
         statusAssetColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
-        assetTable.getItems().setAll(DBHelper.getAssetData(currentUser.getUserId()));
+
+        assetTable.getColumns().setAll(idAssetColumn, accountTypeAssetColumn, nameAssetColumn, descriptionAssetColumn, statusAssetColumn);
         /*
         //LIABILITY TABLE
         populateLiabilityTable();
@@ -84,5 +100,31 @@ public class ChartOfAccountsController {
         //EQUITY TABLE
         populateEquityTable();`
          */
+    }
+
+    public List<Account> getAssetData(int userId) throws SQLException, ClassNotFoundException {
+        ObservableList<Account> assetAccountList = FXCollections.observableArrayList();
+        ResultSet rs;
+
+        String assetQuery = "SELECT * FROM accounts WHERE account = 'Asset Account' AND userId = ?;";
+
+
+        PreparedStatement pst = DBHelper.getConn().prepareStatement(assetQuery);
+        pst.setInt(1, userId);
+        rs = pst.executeQuery();
+
+        while(rs.next()){
+            String accountId = rs.getString("accountId");
+            String account = rs.getString("account");
+            String accountType = rs.getString("accountType");
+            String accountName = rs.getString("accountName");
+            String accountDescription = rs.getString("accountDescription");
+            String archiveAccount = rs.getString("archiveAccount");
+            String userIdDb = rs.getString("userId");
+            assetAccountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
+        }
+
+
+        return assetAccountList;
     }
 }

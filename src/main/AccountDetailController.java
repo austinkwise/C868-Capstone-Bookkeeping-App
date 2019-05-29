@@ -11,8 +11,8 @@ import main.Model.User;
 import java.sql.SQLException;
 
 public class AccountDetailController {
-    private User currentUser;
-    private Bookkeeper myBk;
+    private static User currentUser;
+    private static Bookkeeper myBk;
     private DBHelper myDb;
     private ProfileController profile;
 
@@ -22,9 +22,9 @@ public class AccountDetailController {
     @FXML private TextArea descriptionTa;
     @FXML private CheckBox archiveAccountCheck;
 
-    public void setupAccountDetail(User currentUser){
-        //this.currentUser = currentUser;
-        //System.out.println(currentUser.getUserId());
+    public void setupAccountDetail(User user){
+        currentUser = user;
+        System.out.println(currentUser.getUserId());
 
         accountsCb.setItems(accounts);
         setAccountTypes();

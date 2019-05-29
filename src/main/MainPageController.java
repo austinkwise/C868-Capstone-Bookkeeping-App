@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class MainPageController {
     private Bookkeeper myBk;
-    private User currentUser;
+    private static User currentUser;
     @FXML private AnchorPane sideMenu;
     @FXML public StackPane mainArea;
     @FXML private Label orgLabel;
@@ -22,11 +22,11 @@ public class MainPageController {
     @FXML private Label nameLabel;
 
 
-    public void setupMainApp(Bookkeeper myBk, User currentUser) throws IOException {
+    public void setupMainApp(Bookkeeper myBk, User user) throws IOException {
         this.myBk = myBk;
-        this.currentUser = currentUser;
+        currentUser = user;
 
-        System.out.println("userId: " + this.currentUser.getUserId() + " setupMainApp() in MainPageController");
+        System.out.println("userId: " + currentUser.getUserId() + " setupMainApp() in MainPageController");
 
         orgLabel.setText(currentUser.getOrgName());
         nameLabel.setText(currentUser.getName());

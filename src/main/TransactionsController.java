@@ -6,14 +6,14 @@ import main.Model.User;
 import java.io.IOException;
 
 public class TransactionsController {
-    private Bookkeeper myBk;
-    private User currentUser;
+    private static Bookkeeper myBk;
+    private static User currentUser;
 
-    public void setupTransactions(Bookkeeper myBk, User currentUser) {
-        this.myBk = myBk;
-        this.currentUser = currentUser;
+    public void setupTransactions(Bookkeeper bookkeeper, User user) {
+        myBk = bookkeeper;
+        currentUser = user;
 
-        System.out.println("userId: " + this.currentUser.getUserId() + " setupTransaction() in TransactionsController");
+        System.out.println("userId: " + currentUser.getUserId() + " setupTransaction() in TransactionsController");
     }
 
     @FXML private void showTransactionDetail() throws IOException {

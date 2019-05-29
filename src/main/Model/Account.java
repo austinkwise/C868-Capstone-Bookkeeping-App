@@ -1,16 +1,16 @@
 package main.Model;
 
 public class Account {
-    private int accountId;
+    private String accountId;
     private String account;
     private String accountType;
     private String accountName;
     private String accountDescription;
-    private int archiveAccount;
-    private int userId;
+    private String archiveAccount;
+    private String userId;
 
 
-    public Account(int accountId, String account, String accountType, String accountName, String accountDescription, int archiveAccount, int userId) {
+    public Account(String accountId, String account, String accountType, String accountName, String accountDescription, String archiveAccount, String userId) {
         this.accountId = accountId;
         this.account = account;
         this.accountType = accountType;
@@ -22,11 +22,11 @@ public class Account {
 
     public Account(){};
 
-    public int getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(int accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
@@ -54,11 +54,11 @@ public class Account {
         this.accountDescription = accountDescription;
     }
 
-    public int getArchiveAccount() {
+    public String getArchiveAccount() {
         return archiveAccount;
     }
 
-    public void setArchiveAccount(int archiveAccount) {
+    public void setArchiveAccount(String archiveAccount) {
         this.archiveAccount = archiveAccount;
     }
 
@@ -70,11 +70,11 @@ public class Account {
         this.account = account;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 }
