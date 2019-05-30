@@ -27,8 +27,8 @@
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <DatePicker prefHeight="26.0" prefWidth="167.0" />
-                                    <Button mnemonicParsing="false" text="Update">
+                                    <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="167.0" />
+                                    <Button mnemonicParsing="false" onAction="#updateBalanceSheet" text="Update">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -39,64 +39,6 @@
                                           <Font name="Copperplate" size="13.0" />
                                        </font>
                                     </Button>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="72.0" prefWidth="828.0">
-                                 <children>
-                                    <VBox prefHeight="200.0" prefWidth="100.0">
-                                       <children>
-                                          <Label alignment="CENTER" prefHeight="34.0" prefWidth="100.0" text="Cash and Bank" textFill="WHITE">
-                                             <font>
-                                                <Font name="Copperplate" size="13.0" />
-                                             </font></Label>
-                                          <Label alignment="CENTER" prefHeight="40.0" prefWidth="100.0" text="\$0.00" textFill="WHITE">
-                                             <font>
-                                                <Font name="Copperplate" size="13.0" />
-                                             </font></Label>
-                                       </children>
-                                    </VBox>
-                                    <Label alignment="BOTTOM_CENTER" prefHeight="45.0" prefWidth="49.0" text="+" textFill="WHITE">
-                                       <font>
-                                          <Font name="Copperplate" size="13.0" />
-                                       </font></Label>
-                                    <VBox prefHeight="72.0" prefWidth="150.0">
-                                       <children>
-                                          <Label alignment="CENTER" prefHeight="34.0" prefWidth="154.0" text="Accounts Receivable" textFill="WHITE">
-                                             <font>
-                                                <Font name="Copperplate" size="13.0" />
-                                             </font></Label>
-                                          <Label alignment="CENTER" prefHeight="39.0" prefWidth="143.0" text="\$0.00" textFill="WHITE">
-                                             <font>
-                                                <Font name="Copperplate" size="13.0" />
-                                             </font></Label>
-                                       </children>
-                                    </VBox>
-                                    <Label alignment="BOTTOM_CENTER" prefHeight="59.0" prefWidth="39.0" text="-" textFill="WHITE" />
-                                    <VBox prefHeight="72.0" prefWidth="126.0">
-                                       <children>
-                                          <Label alignment="CENTER" prefHeight="35.0" prefWidth="123.0" text="Accounts Payable" textFill="WHITE">
-                                             <font>
-                                                <Font name="Copperplate" size="13.0" />
-                                             </font></Label>
-                                          <Label alignment="CENTER" prefHeight="41.0" prefWidth="118.0" text="\$0.00" textFill="WHITE">
-                                             <font>
-                                                <Font name="Copperplate" size="13.0" />
-                                             </font></Label>
-                                       </children>
-                                    </VBox>
-                                    <Label alignment="BOTTOM_CENTER" prefHeight="55.0" prefWidth="48.0" text="=" textFill="WHITE" />
-                                    <VBox prefHeight="200.0" prefWidth="100.0">
-                                       <children>
-                                          <Label alignment="CENTER" prefHeight="35.0" prefWidth="100.0" text="Total" textFill="WHITE">
-                                             <font>
-                                                <Font name="Copperplate" size="13.0" />
-                                             </font></Label>
-                                          <Label alignment="CENTER" prefHeight="40.0" prefWidth="100.0" text="\$0.00" textFill="WHITE">
-                                             <font>
-                                                <Font name="Copperplate" size="13.0" />
-                                             </font></Label>
-                                       </children>
-                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox prefHeight="26.0" prefWidth="828.0">
@@ -133,7 +75,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="291.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="cashAndBankLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="291.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -142,7 +84,7 @@
                                           <HBox layoutX="10.0" layoutY="32.0" prefHeight="31.0" prefWidth="418.0">
                                              <children>
                                                 <Label prefHeight="31.0" prefWidth="269.0" text="Total Other Current Assets" textFill="WHITE" />
-                                                <Label alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="283.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="otherCurrentAssetsLabel" alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="283.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -154,7 +96,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="291.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="longTermAssetsLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="291.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -166,7 +108,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="totalAssetsLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -186,7 +128,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="currentLiabilitiesLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -198,7 +140,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="longTermLiabilitiesLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -210,7 +152,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="totalLiabilitiesLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -234,7 +176,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="otherEquityLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -246,7 +188,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="retainedEarningsLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -258,7 +200,7 @@
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
-                                                <Label alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
+                                                <Label fx:id="totalEquityLabel" alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="295.0" text="\$0.00" textFill="WHITE">
                                                    <font>
                                                       <Font name="Copperplate" size="13.0" />
                                                    </font></Label>
@@ -293,14 +235,14 @@
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <DatePicker />
+                                    <DatePicker fx:id="fromDp" />
                                     <Label prefHeight="34.0" prefWidth="24.0" text="To: " textFill="WHITE">
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <DatePicker />
+                                    <DatePicker fx:id="toDp" />
                                     <Label prefHeight="17.0" prefWidth="177.0" />
-                                    <Button mnemonicParsing="false" text="Update">
+                                    <Button mnemonicParsing="false" onAction="#updateIncomeStatement" text="Update">
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Button>
@@ -314,7 +256,7 @@
                                              <font>
                                                 <Font name="Copperplate" size="13.0" />
                                              </font></Label>
-                                          <Label alignment="CENTER" prefHeight="40.0" prefWidth="100.0" text="\$0.00" textFill="WHITE">
+                                          <Label fx:id="incomeLabel" alignment="CENTER" prefHeight="40.0" prefWidth="100.0" text="\$0.00" textFill="WHITE">
                                              <font>
                                                 <Font name="Copperplate" size="13.0" />
                                              </font></Label>
@@ -330,7 +272,7 @@
                                              <font>
                                                 <Font name="Copperplate" size="13.0" />
                                              </font></Label>
-                                          <Label alignment="CENTER" prefHeight="39.0" prefWidth="143.0" text="\$0.00" textFill="WHITE">
+                                          <Label fx:id="cogsLabel" alignment="CENTER" prefHeight="39.0" prefWidth="143.0" text="\$0.00" textFill="WHITE">
                                              <font>
                                                 <Font name="Copperplate" size="13.0" />
                                              </font></Label>
@@ -346,7 +288,7 @@
                                              <font>
                                                 <Font name="Copperplate" size="13.0" />
                                              </font></Label>
-                                          <Label alignment="CENTER" prefHeight="41.0" prefWidth="118.0" text="\$0.00" textFill="WHITE">
+                                          <Label fx:id="operatingExpensesLabel" alignment="CENTER" prefHeight="41.0" prefWidth="118.0" text="\$0.00" textFill="WHITE">
                                              <font>
                                                 <Font name="Copperplate" size="13.0" />
                                              </font></Label>
@@ -362,7 +304,7 @@
                                              <font>
                                                 <Font name="Copperplate" size="13.0" />
                                              </font></Label>
-                                          <Label alignment="CENTER" prefHeight="40.0" prefWidth="100.0" text="\$0.00" textFill="WHITE">
+                                          <Label fx:id="netProfitLabel" alignment="CENTER" prefHeight="40.0" prefWidth="100.0" text="\$0.00" textFill="WHITE">
                                              <font>
                                                 <Font name="Copperplate" size="13.0" />
                                              </font></Label>
@@ -376,10 +318,6 @@
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <Label alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="749.0" text="Date" textFill="WHITE">
-                                       <font>
-                                          <Font name="Copperplate" size="13.0" />
-                                       </font></Label>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="50.0" prefWidth="828.0">
@@ -388,7 +326,7 @@
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <Label text="\$0.00" textFill="WHITE">
+                                    <Label fx:id="incomeLabel" text="\$0.00" textFill="WHITE">
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
@@ -400,7 +338,7 @@
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <Label text="\$0.00" textFill="WHITE">
+                                    <Label fx:id="cogsLabel" text="\$0.00" textFill="WHITE">
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
@@ -412,7 +350,7 @@
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <Label text="\$0.00" textFill="WHITE">
+                                    <Label fx:id="grossProfitLabel" text="\$0.00" textFill="WHITE">
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
@@ -424,7 +362,7 @@
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <Label text="\$0.00" textFill="WHITE">
+                                    <Label fx:id="operatingExpensesLabel" text="\$0.00" textFill="WHITE">
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
@@ -436,7 +374,7 @@
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>
-                                    <Label text="\$0.00" textFill="WHITE">
+                                    <Label fx:id="netProfitLabel" text="\$0.00" textFill="WHITE">
                                        <font>
                                           <Font name="Copperplate" size="13.0" />
                                        </font></Label>

@@ -1,25 +1,70 @@
 package main;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import main.Helpers.DBConnection;
+import main.Model.Account;
+import main.Model.Transaction;
 import main.Model.User;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class TransactionsController {
     private static Bookkeeper myBk;
     private static User currentUser;
+    private static Transaction transactionModSelected;
 
-    public void setupTransactions(Bookkeeper bookkeeper, User user) {
+    @FXML private TableView<Transaction> transactionTable;
+    @FXML private TableColumn<Transaction, String> dateColumn;
+    @FXML private TableColumn<Transaction, String> accountColumn;
+    @FXML private TableColumn<Transaction, String> descriptionColumn;
+    @FXML private TableColumn<Transaction, String> amountColumn;
+    @FXML private TableColumn<Transaction, String> categoryColumn;
+
+    public void setupTransactions(Bookkeeper bookkeeper, User user) throws SQLException {
         myBk = bookkeeper;
         currentUser = user;
 
-        System.out.println("userId: " + currentUser.getUserId() + " setupTransaction() in TransactionsController");
+        populateTable();
     }
 
-    @FXML private void showTransactionDetail() throws IOException {
-        System.out.println("The issue is happening here where the current User object is returning null rather than containing the current users information");
-        System.out.println ("userId: " + currentUser.getUserId() + " showTransactionDetail() in TransactionsController");
-
+    @FXML private void addTransactionClick() throws IOException {
         myBk.showTransactionDetail();
     }
+
+    @FXML private void editTransactionClick() throws IOException {
+        setSelectedTransaction(transactionTable.getSelectionModel().getSelectedItem());
+
+        if(transactionModSelected == null){
+            System.out.println("pick an account");
+        }else{
+            myBk.showTransactionDetail();
+        }
+    }
+
+    private void populateTable() throws SQLException {
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
+        accountColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
+
+        transactionTable.getItems().setAll(DBConnection.getTransactionData(currentUser.getUserId()));
+    }
+
+    public static Transaction getSelectedTransaction(){
+        return transactionModSelected;
+    }
+
+    public static void setSelectedTransaction(Transaction transaction){
+        transactionModSelected = transaction;
+    }
+
+    public static void resetSelectedTransaction(){
+        transactionModSelected = null;
+    }
+
 }

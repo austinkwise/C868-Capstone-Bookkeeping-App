@@ -22,7 +22,7 @@ public class MainPageController {
     @FXML private Label nameLabel;
 
 
-    public void setupMainApp(Bookkeeper myBk, User user) throws IOException {
+    public void setupMainApp(Bookkeeper myBk, User user) throws IOException, SQLException {
         this.myBk = myBk;
         currentUser = user;
 
@@ -39,7 +39,7 @@ public class MainPageController {
         myBk.showSignIn();
     }
 
-    @FXML private void transactionsCLick() throws IOException {
+    @FXML private void transactionsCLick() throws IOException, SQLException {
         pageLabel.setText("Transactions");
         myBk.showTransactions();
     }
@@ -49,7 +49,7 @@ public class MainPageController {
         myBk.showChartofAccounts();
     }
 
-    @FXML private void reportsClick() throws IOException {
+    @FXML private void reportsClick() throws IOException, SQLException {
         pageLabel.setText("Reports");
         myBk.showReports();
     }

@@ -29,7 +29,12 @@
                      </font></Label>
                   <HBox alignment="CENTER_RIGHT" prefHeight="37.0" prefWidth="641.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#showTransactionDetail" text="Add Transaction">
+                        <Button mnemonicParsing="false" text="Edit Transaction">
+                           <font>
+                              <Font name="Copperplate" size="13.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#addTransactionClick" text="Add Transaction">
                            <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                            </HBox.margin>

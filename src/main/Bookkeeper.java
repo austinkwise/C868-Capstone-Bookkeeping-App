@@ -49,7 +49,7 @@ public class Bookkeeper extends Application {
         stage.show();
     }
 
-    public void showMainApp(User currentUser) throws IOException {
+    public void showMainApp(User currentUser) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/MainPage.fxml"));
         AnchorPane pane = loader.load();
@@ -65,7 +65,7 @@ public class Bookkeeper extends Application {
         stage.show();
     }
 
-    public void showTransactions() throws IOException {
+    public void showTransactions() throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/Transactions.fxml"));
         loader.load();
@@ -87,7 +87,7 @@ public class Bookkeeper extends Application {
         stage.setScene(new Scene(root));
 
         TransactionDetailController controller = loader.getController();
-        controller.setupTransactionDetail(currentUser);
+        controller.setupTransactionDetail(currentUser, this);
 
         stage.show();
     }
@@ -106,7 +106,7 @@ public class Bookkeeper extends Application {
         mainPageController.mainArea.getChildren().setAll(pane);
     }
 
-    public void showReports() throws IOException {
+    public void showReports() throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/Reports.fxml"));
         loader.load();

@@ -16,11 +16,6 @@ public class ChartOfAccountsController {
     private static Bookkeeper myBk;
     private static Account accountModSelected;
 
-    private static Account liabilityAccountModSelected;
-    private static Account incomeAccountModSelected;
-    private static Account expenseAccountModSelected;
-    private static Account equityAccountModSelected;
-
     @FXML private TableView<Account> assetTable;
     @FXML private TableColumn<Account, String> idAssetColumn;
     @FXML private TableColumn<Account, String> accountTypeAssetColumn;
@@ -78,20 +73,44 @@ public class ChartOfAccountsController {
     }
 
     @FXML private void editLiabilityAccount() throws IOException{
-        liabilityAccountModSelected = liabilityTable.getSelectionModel().getSelectedItem();
+        setSelectedAccount(liabilityTable.getSelectionModel().getSelectedItem());
+
+        if(accountModSelected == null){
+            System.out.println("pick an account");
+        }else{
+            myBk.showAccountDetail();
+        }
     }
 
     @FXML private void editIncomeAccount() throws IOException{
-        incomeAccountModSelected = incomeTable.getSelectionModel().getSelectedItem();
+        setSelectedAccount(incomeTable.getSelectionModel().getSelectedItem());
+
+        if(accountModSelected == null){
+            System.out.println("pick an account");
+        }else{
+            myBk.showAccountDetail();
+        }
     }
 
 
     @FXML private void editExpenseAccount() throws IOException{
-        expenseAccountModSelected = expenseTable.getSelectionModel().getSelectedItem();
+        setSelectedAccount(expenseTable.getSelectionModel().getSelectedItem());
+
+        if(accountModSelected == null){
+            System.out.println("pick an account");
+        }else{
+            myBk.showAccountDetail();
+        }
     }
 
     @FXML private void editEquityAccount() throws IOException{
-        equityAccountModSelected = equityTable.getSelectionModel().getSelectedItem();
+        setSelectedAccount(equityTable.getSelectionModel().getSelectedItem());
+
+        if(accountModSelected == null){
+            System.out.println("pick an account");
+        }else{
+            myBk.showAccountDetail();
+        }
     }
 
     private void populateTables() throws SQLException, ClassNotFoundException {

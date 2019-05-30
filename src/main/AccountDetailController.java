@@ -30,12 +30,13 @@ public class AccountDetailController {
         accountModSelected = ChartOfAccountsController.getSelectedAccount();
 
         if(accountModSelected == null){
+            archiveAccountCheck.setVisible(false);
             accountsCb.setItems(accounts);
             setAccountTypes();
         }else{
             accountsCb.setItems(accounts);
             setAccountTypes();
-            
+
             accountsCb.getSelectionModel().select(accountModSelected.getAccount());
             accountTypeCb.getSelectionModel().select(accountModSelected.getAccount());
             accountNameTf.setText(accountModSelected.getAccountName());
@@ -62,16 +63,16 @@ public class AccountDetailController {
 
         switch (idx){
             case 0:
-                accountType = FXCollections.observableArrayList("Cash and Bank", "Money In Transit", "Expected Payments from Customers", "Inventory", "Property, Plant, Equipment", "Depreciation and Amortization", "Vendor Prepayments and Vendor Credits", "Other Short Term Asset", "Other Long Term Asset");
+                accountType = FXCollections.observableArrayList("Cash and Bank", "Other Current Asset", "Other Long Term Asset");
                 break;
             case 1:
-                accountType = FXCollections.observableArrayList("Credit Card", "Loan or Line of Credit", "Expected Payments to Vendors", "Sales Tax", "Due for Payroll", "Due to you and other business owners", "Customer Prepayments and Customer Credits", "Other Short Term Liability", "Other Long Term Liability");
+                accountType = FXCollections.observableArrayList("Current Liability", "Other Long Term Liability");
                 break;
             case 2:
-                accountType = FXCollections.observableArrayList("Income", "Discount", "Other Income", "Uncategorized Income", "Gain on Foreign Exchange");
+                accountType = FXCollections.observableArrayList("Income", "Uncategorized Income");
                 break;
             case 3:
-                accountType = FXCollections.observableArrayList("Operation Expense", "Cost of Goods Sold", "Payment Processing Fee", "Payroll Expense", "Uncategorized Expense", "Loss on Foreign Exchange");
+                accountType = FXCollections.observableArrayList("Operation Expense", "Cost of Goods Sold", "Uncategorized Expense");
                 break;
             case 4:
                 accountType = FXCollections.observableArrayList("Business Owner Contribution and Drawing", "Retained Earnings: Profit");
