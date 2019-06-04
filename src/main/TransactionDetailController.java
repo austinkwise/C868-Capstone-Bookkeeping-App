@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 
 public class TransactionDetailController {
     private static User currentUser;
-    private static Bookkeeper myBk;
     private static DBConnection myDb;
     private static Transaction transactionModSelected;
 
@@ -29,9 +28,8 @@ public class TransactionDetailController {
     public TransactionDetailController() throws SQLException {
     }
 
-    public void setupTransactionDetail(User user, Bookkeeper bookkeeper){
+    public void setupTransactionDetail(User user){
         currentUser = user;
-        myBk = bookkeeper;
 
         transactionModSelected = TransactionsController.getSelectedTransaction();
 

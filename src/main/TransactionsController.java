@@ -5,7 +5,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.Helpers.DBConnection;
-import main.Model.Account;
 import main.Model.Transaction;
 import main.Model.User;
 
@@ -28,7 +27,7 @@ public class TransactionsController {
         myBk = bookkeeper;
         currentUser = user;
 
-        populateTable();
+        //populateTable();
     }
 
     @FXML private void addTransactionClick() throws IOException {
@@ -46,11 +45,11 @@ public class TransactionsController {
     }
 
     private void populateTable() throws SQLException {
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
-        accountColumn.setCellValueFactory(new PropertyValueFactory<>("accountType"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("accountName"));
-        amountColumn.setCellValueFactory(new PropertyValueFactory<>("accountDescription"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("transactionDate"));
+        accountColumn.setCellValueFactory(new PropertyValueFactory<>("transactionAccount"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("transactionDescription"));
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("transactionAmount"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("transactionCategory"));
 
         transactionTable.getItems().setAll(DBConnection.getTransactionData(currentUser.getUserId()));
     }

@@ -74,14 +74,7 @@
                                         <Font name="Copperplate" size="13.0" />
                                     </font>
                                 </Button>
-                                <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="186.0" style="-fx-background-color: #00b894;" text="Forgot Password?">
-                                    <VBox.margin>
-                                        <Insets />
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Copperplate Bold" size="13.0" />
-                                    </font>
-                                </Button>
+                        <Label fx:id="errorLabel" />
                             </children>
                         </VBox>
                         <Button layoutX="277.0" layoutY="1.0" mnemonicParsing="false" onAction="#exitClicked" style="-fx-background-color: #2b2b2d;" text="X" textFill="WHITE" />

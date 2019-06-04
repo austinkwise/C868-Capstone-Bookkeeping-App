@@ -75,7 +75,7 @@ public class AccountDetailController {
                 accountType = FXCollections.observableArrayList("Operation Expense", "Cost of Goods Sold", "Uncategorized Expense");
                 break;
             case 4:
-                accountType = FXCollections.observableArrayList("Business Owner Contribution and Drawing", "Retained Earnings: Profit");
+                accountType = FXCollections.observableArrayList("Other Equity", "Retained Earnings: Profit");
                 break;
             default:
                 break;

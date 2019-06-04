@@ -90,9 +90,11 @@ public class DBConnection {
             rs = pst.executeQuery();
         }
 
-        while(rs.next()){
+        if(rs.next()){
             String passwordHolder = rs.getString("password");
-            if(passwordHolder.contentEquals(password)){
+            if(!passwordHolder.contentEquals(password)){
+                return null;
+            }
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setUserId(rs.getInt("userId"));
@@ -100,11 +102,10 @@ public class DBConnection {
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-            }else{
-                return null;
-            }
         }
-        System.out.println(user + "signInUser() in DBConnection");
+        else{
+            return null;
+        }
         return user;
     }
 
@@ -145,7 +146,7 @@ public class DBConnection {
         return true;
     }
 
-    public static List<Account> getAccountData(int userId, int accounts) throws SQLException, ClassNotFoundException {
+    public static List<Account> getAccountData(int userId, int accounts) throws SQLException {
         ObservableList<Account> accountList = FXCollections.observableArrayList();
         ResultSet rs;
 
@@ -180,6 +181,30 @@ public class DBConnection {
         PreparedStatement pst = getConn().prepareStatement(assetQuery);
         pst.setString(1, accountSwitch);
         pst.setInt(2, userId);
+
+        rs = pst.executeQuery();
+
+        while(rs.next()){
+            String accountId = rs.getString("accountId");
+            String account = rs.getString("account");
+            String accountType = rs.getString("accountType");
+            String accountName = rs.getString("accountName");
+            String accountDescription = rs.getString("accountDescription");
+            String archiveAccount = rs.getString("archiveAccount");
+            String userIdDb = rs.getString("userId");
+            accountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
+        }
+        return accountList;
+    }
+
+    public static List<Account> getAllAccountData(int userId) throws SQLException {
+        ObservableList<Account> accountList = FXCollections.observableArrayList();
+        ResultSet rs;
+
+        String assetQuery = "SELECT * FROM accounts WHERE userId = ?;";
+
+        PreparedStatement pst = getConn().prepareStatement(assetQuery);
+        pst.setInt(1, userId);
 
         rs = pst.executeQuery();
 
@@ -351,7 +376,7 @@ public class DBConnection {
         return totalCogs;
     }
 
-    public Integer getAssetData(int userId, String accountType, String transactionType, String date) throws SQLException {
+    public Integer getBalanceSheetData(int userId, String accountType, String transactionType, String date) throws SQLException {
         int assets = 0;
         ResultSet rs;
 

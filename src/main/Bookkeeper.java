@@ -55,7 +55,6 @@ public class Bookkeeper extends Application {
         AnchorPane pane = loader.load();
 
         this.currentUser = currentUser;
-        System.out.println("userId: " + this.currentUser.getUserId() + " showMainApp() in Bookkeeper");
 
         mainPageController = loader.getController();
         mainPageController.setupMainApp(this, this.currentUser);
@@ -69,8 +68,6 @@ public class Bookkeeper extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/Transactions.fxml"));
         loader.load();
-
-        System.out.println("userId: " + currentUser.getUserId() + " showTransactions() in Bookkeeper");
 
         TransactionsController controller = loader.getController();
         controller.setupTransactions(this, currentUser);
@@ -87,7 +84,7 @@ public class Bookkeeper extends Application {
         stage.setScene(new Scene(root));
 
         TransactionDetailController controller = loader.getController();
-        controller.setupTransactionDetail(currentUser, this);
+        controller.setupTransactionDetail(currentUser);
 
         stage.show();
     }
@@ -96,8 +93,6 @@ public class Bookkeeper extends Application {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
         loader.load();
-
-        System.out.println("userId: " + currentUser.getUserId() + " showChartOfAccounts() in Bookkeeper");
 
         ChartOfAccountsController controller = loader.getController();
         controller.setupChartOfAccounts(currentUser, this);

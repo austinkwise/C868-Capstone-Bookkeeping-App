@@ -26,8 +26,6 @@ public class MainPageController {
         this.myBk = myBk;
         currentUser = user;
 
-        System.out.println("userId: " + currentUser.getUserId() + " setupMainApp() in MainPageController");
-
         orgLabel.setText(currentUser.getOrgName());
         nameLabel.setText(currentUser.getName());
 

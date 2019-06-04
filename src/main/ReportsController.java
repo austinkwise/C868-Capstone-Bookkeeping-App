@@ -1,6 +1,5 @@
 package main;
 
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -8,9 +7,8 @@ import main.Helpers.DBConnection;
 import main.Model.User;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
+
 
 public class ReportsController {
     private static User currentUser;
@@ -89,23 +87,40 @@ public class ReportsController {
         netProfitLabel.setText(String.valueOf(netProfit));
     }
 
-    private void populateBalanceSheet(){
+    private void populateBalanceSheet() throws SQLException {
         Calendar now = Calendar.getInstance();
         String today = now.get(Calendar.YEAR) + "-" + (now.get(Calendar.MONTH) + 1) + "-" + now.get(Calendar.DATE);
 
         System.out.println(today);
         
-        int cashAndBank = 1;
-        int otherCurrentAssets = 1;
-        int longTermAssets = 1;
+        int cashAndBankIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Cash and Bank'", "'Income'", today);
+        int cashAndBankExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Cash and Bank'", "'Expense'", today);
+        int cashAndBank = cashAndBankIncome - cashAndBankExpense;
+        int otherCurrentAssetsIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Current Assets'", "'Income'", today);
+        int otherCurrentAssetsExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Current Assets'", "'Expense'", today);
+        int otherCurrentAssets = otherCurrentAssetsIncome - otherCurrentAssetsExpense;
+        int longTermAssetsIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Long Term Assets'", "'Income'", today);
+        int longTermAssetsExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Long Term Assets'", "'Expense'", today);
+        int longTermAssets = longTermAssetsIncome - longTermAssetsExpense;
+
         int totalAssets = cashAndBank + otherCurrentAssets + longTermAssets;
 
-        int currentLiabilities = 1;
-        int longTermLiabilities = 1;
-        int totalLiabilities = currentLiabilities + longTermLiabilities;
+        int currentLiabilitiesIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Current Liabilities'", "'Income'", today);
+        int currentLiabilitiesExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Current Liabilities'", "'Expense'", today);
+        int currentLiabilities = currentLiabilitiesIncome - currentLiabilitiesExpense;
+        int otherLongTermLiabilitiesIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Long Term Liability'", "'Income'", today);
+        int otherLongTermLiabilitiesExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Long Term Liability'", "'Expense'", today);
+        int otherLongTermLiabilities = otherLongTermLiabilitiesIncome - otherLongTermLiabilitiesExpense;
 
-        int otherEquity = 1;
-        int retainedEarnings = 1;
+        int totalLiabilities = currentLiabilities + otherLongTermLiabilities;
+
+        int otherEquityIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Equity'", "'Income'", today);
+        int otherEquityExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Equity'", "'Expense'", today);
+        int otherEquity = otherEquityIncome - otherEquityExpense;
+        int retainedEarningsIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Retained Earnings: Profit'", "'Income'", today);
+        int retainedEarningsExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Retained Earnings: Profit'", "'Expense'", today);
+        int retainedEarnings = retainedEarningsIncome - retainedEarningsExpense;
+
         int totalEquity = otherEquity + retainedEarnings;
 
         cashAndBankLabel.setText(String.valueOf(cashAndBank));
@@ -114,7 +129,7 @@ public class ReportsController {
         totalAssetsLabel.setText(String.valueOf(totalAssets));
 
         currentLiabilitiesLabel.setText(String.valueOf(currentLiabilities));
-        longTermLiabilitiesLabel.setText(String.valueOf(longTermLiabilities));
+        longTermLiabilitiesLabel.setText(String.valueOf(otherLongTermLiabilities));
         totalLiabilitiesLabel.setText(String.valueOf(totalLiabilities));
 
         otherEquityLabel.setText(String.valueOf(otherEquity));
@@ -122,7 +137,52 @@ public class ReportsController {
         totalEquityLabel.setText(String.valueOf(totalEquity));
     }
 
-    @FXML private void updateBalanceSheet(){
+    @FXML private void updateBalanceSheet() throws SQLException {
+        String date = datePicker.getValue().toString();
 
+        System.out.println(date);
+
+        int cashAndBankIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Cash and Bank'", "'Income'", date);
+        int cashAndBankExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Cash and Bank'", "'Expense'", date);
+        int cashAndBank = cashAndBankIncome - cashAndBankExpense;
+        int otherCurrentAssetsIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Current Assets'", "'Income'", date);
+        int otherCurrentAssetsExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Current Assets'", "'Expense'", date);
+        int otherCurrentAssets = otherCurrentAssetsIncome - otherCurrentAssetsExpense;
+        int longTermAssetsIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Long Term Assets'", "'Income'", date);
+        int longTermAssetsExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Long Term Assets'", "'Expense'", date);
+        int longTermAssets = longTermAssetsIncome - longTermAssetsExpense;
+
+        int totalAssets = cashAndBank + otherCurrentAssets + longTermAssets;
+
+        int currentLiabilitiesIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Current Liabilities'", "'Income'", date);
+        int currentLiabilitiesExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Current Liabilities'", "'Expense'", date);
+        int currentLiabilities = currentLiabilitiesIncome - currentLiabilitiesExpense;
+        int otherLongTermLiabilitiesIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Long Term Liability'", "'Income'", date);
+        int otherLongTermLiabilitiesExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Long Term Liability'", "'Expense'", date);
+        int otherLongTermLiabilities = otherLongTermLiabilitiesIncome - otherLongTermLiabilitiesExpense;
+
+        int totalLiabilities = currentLiabilities + otherLongTermLiabilities;
+
+        int otherEquityIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Equity'", "'Income'", date);
+        int otherEquityExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Other Equity'", "'Expense'", date);
+        int otherEquity = otherEquityIncome - otherEquityExpense;
+        int retainedEarningsIncome = myDb.getBalanceSheetData(currentUser.getUserId(), "'Retained Earnings: Profit'", "'Income'", date);
+        int retainedEarningsExpense = myDb.getBalanceSheetData(currentUser.getUserId(), "'Retained Earnings: Profit'", "'Expense'", date);
+        int retainedEarnings = retainedEarningsIncome - retainedEarningsExpense;
+
+        int totalEquity = otherEquity + retainedEarnings;
+
+        cashAndBankLabel.setText(String.valueOf(cashAndBank));
+        otherCurrentAssetsLabel.setText(String.valueOf(otherCurrentAssets));
+        longTermAssetsLabel.setText(String.valueOf(longTermAssets));
+        totalAssetsLabel.setText(String.valueOf(totalAssets));
+
+        currentLiabilitiesLabel.setText(String.valueOf(currentLiabilities));
+        longTermLiabilitiesLabel.setText(String.valueOf(otherLongTermLiabilities));
+        totalLiabilitiesLabel.setText(String.valueOf(totalLiabilities));
+
+        otherEquityLabel.setText(String.valueOf(otherEquity));
+        retainedEarningsLabel.setText(String.valueOf(retainedEarnings));
+        totalEquityLabel.setText(String.valueOf(totalEquity));
     }
 }
