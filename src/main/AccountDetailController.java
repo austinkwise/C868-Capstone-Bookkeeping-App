@@ -10,12 +10,12 @@ import main.Model.Account;
 import main.Model.User;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class AccountDetailController {
     private static User currentUser;
     private static Bookkeeper myBk;
     private DBConnection myDb;
-    private ProfileController profile;
     private static Account accountModSelected;
 
     @FXML private Button cancelBtn, saveBtn;
@@ -38,13 +38,17 @@ public class AccountDetailController {
             setAccountTypes();
 
             accountsCb.getSelectionModel().select(accountModSelected.getAccount());
-            accountTypeCb.getSelectionModel().select(accountModSelected.getAccount());
+            accountTypeCb.getSelectionModel().select(accountModSelected.getAccountType());
             accountNameTf.setText(accountModSelected.getAccountName());
             accountIdTf.setText(accountModSelected.getAccountId());
             descriptionTa.setText(accountModSelected.getAccountDescription());
-            if(accountModSelected.getArchiveAccount().contentEquals("1")){
-                archiveAccountCheck.isSelected();
+
+            if(accountModSelected.getArchiveAccount().contentEquals("Archived")){
+                archiveAccountCheck.setSelected(true);
+            }else{
+                archiveAccountCheck.setSelected(false);
             }
+
         }
     }
 
@@ -69,10 +73,10 @@ public class AccountDetailController {
                 accountType = FXCollections.observableArrayList("Current Liability", "Other Long Term Liability");
                 break;
             case 2:
-                accountType = FXCollections.observableArrayList("Income", "Uncategorized Income");
+                accountType = FXCollections.observableArrayList("Income");
                 break;
             case 3:
-                accountType = FXCollections.observableArrayList("Operation Expense", "Cost of Goods Sold", "Uncategorized Expense");
+                accountType = FXCollections.observableArrayList("Operation Expense", "Cost of Goods Sold");
                 break;
             case 4:
                 accountType = FXCollections.observableArrayList("Other Equity", "Retained Earnings: Profit");
@@ -94,11 +98,6 @@ public class AccountDetailController {
 
         int userId = currentUser.getUserId();
 
-        boolean isArchived = archiveAccountCheck.isSelected();
-        if (isArchived){
-            archiveAccount = 1;
-        }
-
         if(accountModSelected == null){
             boolean saveSuccess;
             saveSuccess = myDb.saveNewAccount(accounts, accountType, accountName, accountId, description, archiveAccount, userId);
@@ -107,18 +106,45 @@ public class AccountDetailController {
                 Stage stage = (Stage) saveBtn.getScene().getWindow();
                 stage.close();
             }
-        }else {
-            boolean saveSuccess;
-            saveSuccess = myDb.updateAccount(accounts, accountType, accountName, accountId, description, archiveAccount, userId);
+        }else{
+            boolean isArchived = archiveAccountCheck.isSelected();
+            if(isArchived){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirm action");
+                alert.setHeaderText("Confirm account archiving");
+                alert.setContentText("Are you sure you want to archive this account? This will prevent any further usage of this account");
+                Optional<ButtonType> result = alert.showAndWait();
 
-            if(saveSuccess){
-                Stage stage = (Stage) saveBtn.getScene().getWindow();
-                stage.close();
+                if(result.get() == ButtonType.OK){
+                    archiveAccount = 1;
+
+                    boolean saveSuccess;
+                    saveSuccess = myDb.updateAccount(accounts, accountType, accountName, accountId, description, archiveAccount, userId);
+
+                    if(saveSuccess){
+                        Stage stage = (Stage) saveBtn.getScene().getWindow();
+                        stage.close();
+                    }
+                }else{
+                    //they decided they don't want to archive the account
+                    archiveAccountCheck.setSelected(false);
+                }
+            }else{
+                //updating account without archiving it. save it
+                boolean saveSuccess;
+                saveSuccess = myDb.updateAccount(accounts, accountType, accountName, accountId, description, archiveAccount, userId);
+
+                if(saveSuccess){
+                    Stage stage = (Stage) saveBtn.getScene().getWindow();
+                    stage.close();
+                }
             }
         }
     }
 
     @FXML private void cancel(){
+        accountModSelected = ChartOfAccountsController.resetSelectedAccount();
+
         Stage stage = (Stage) cancelBtn.getScene().getWindow();
         stage.close();
     }

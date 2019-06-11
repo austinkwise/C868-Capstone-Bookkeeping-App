@@ -2,14 +2,22 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="850.0" style="-fx-background-color: #434447;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ChartOfAccountsController">
     <children>
-        <Button layoutX="693.0" layoutY="14.0" mnemonicParsing="false" onAction="#addAccountClick" text="Add a New Account" />
-      <Button fx:id="editAccountClick" layoutX="583.0" layoutY="14.0" mnemonicParsing="false" text="Edit Account" />
+        <Button layoutX="693.0" layoutY="14.0" mnemonicParsing="false" onAction="#addAccountClick" style="-fx-background-color: #2b2b2d;" text="Add a New Account" textFill="WHITE">
+         <font>
+            <Font name="Copperplate" size="13.0" />
+         </font></Button>
+      <Button layoutX="583.0" layoutY="14.0" mnemonicParsing="false" onAction="#editAccountClick" style="-fx-background-color: #2b2b2d;" text="Edit Account" textFill="WHITE">
+         <font>
+            <Font name="Copperplate" size="13.0" />
+         </font></Button>
       <TableView fx:id="accountsTable" layoutX="22.0" layoutY="58.0" prefHeight="513.0" prefWidth="795.0">
         <columns>
           <TableColumn fx:id="idColumn" prefWidth="60.0" text="ID" />
@@ -20,7 +28,15 @@
             <TableColumn fx:id="statusColumn" prefWidth="111.0" text="Status" />
         </columns>
       </TableView>
-      <ComboBox fx:id="accountsCb" layoutX="39.0" layoutY="14.0" prefWidth="150.0" promptText="All Accounts"/>
-      <Button layoutX="201.0" layoutY="14.0" mnemonicParsing="false" onAction="#updateTableClick" text="Update Table" />
+      <ComboBox fx:id="accountsCb" layoutX="22.0" layoutY="12.0" prefHeight="27.0" prefWidth="163.0" promptText="Select an Account" style="-fx-background-image: #2b2b2d;" />
+      <Button layoutX="202.0" layoutY="14.0" mnemonicParsing="false" onAction="#updateTableClick" style="-fx-background-color: #2b2b2d;" text="Update Table" textFill="WHITE">
+         <font>
+            <Font name="Copperplate" size="13.0" />
+         </font></Button>
+      <Label fx:id="headerLabel" alignment="CENTER" layoutX="341.0" layoutY="17.0" prefHeight="17.0" prefWidth="137.0" text="All Accounts" textFill="WHITE">
+         <font>
+            <Font name="Copperplate" size="13.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

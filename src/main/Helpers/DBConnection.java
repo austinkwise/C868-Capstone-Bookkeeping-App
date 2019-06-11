@@ -6,11 +6,8 @@ import main.Model.Account;
 import main.Model.Transaction;
 import main.Model.User;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public class DBConnection {
@@ -35,7 +32,19 @@ public class DBConnection {
         conn = DriverManager.getConnection(DB_URL, user, pass);
     }
 
+    public static Connection getConn(){
+        return conn;
+    }
 
+    public static void closeConn () throws SQLException {
+        conn.close();
+    }
+
+    /*
+    ===============================
+    SIGN UP METHODS
+    ===============================
+     */
     public static void signUpUser(String username, String password, String name, String phone, String email, String orgName) throws SQLException, ClassNotFoundException {
         String statement = "INSERT INTO users (username, password, name, phone, email, organizationName) VALUES (?, ?, ?, ?, ?, ?);";
 
@@ -48,26 +57,13 @@ public class DBConnection {
         pst.setString(5, email);
         pst.setString(6, orgName);
         pst.execute();
-        conn.close();
     }
 
-    public static boolean updateUser(String username, String name, String phone, String email, String orgName, int userId) throws SQLException, ClassNotFoundException {
-        String statement = "UPDATE users SET username = ?, name = ?, phone = ?, email = ?, organizationName = ? WHERE userId = ?";
-
-        init();
-        PreparedStatement pst = conn.prepareStatement(statement);
-        pst.setString(1, username);
-        pst.setString(2, name);
-        pst.setString(3, phone);
-        pst.setString(4, email);
-        pst.setString(5, orgName);
-        pst.setInt(6, userId);
-        pst.execute();
-        conn.close();
-
-        return true;
-    }
-
+    /*
+    ================================
+    SIGN IN METHODS
+    ================================
+     */
     public static User signInUser(String usernameEmail, String password) throws SQLException, ClassNotFoundException {
         ResultSet rs;
         User user = new User();
@@ -95,13 +91,13 @@ public class DBConnection {
             if(!passwordHolder.contentEquals(password)){
                 return null;
             }
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setUserId(rs.getInt("userId"));
-                user.setOrgName(rs.getString("organizationName"));
-                user.setName(rs.getString("name"));
-                user.setEmail(rs.getString("email"));
-                user.setPhone(rs.getString("phone"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
+            user.setUserId(rs.getInt("userId"));
+            user.setOrgName(rs.getString("organizationName"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setPhone(rs.getString("phone"));
         }
         else{
             return null;
@@ -109,78 +105,72 @@ public class DBConnection {
         return user;
     }
 
-    public static boolean saveNewAccount(String accounts, String accountType, String accountName, int accountId, String description, int archiveAccount, int userId) throws SQLException, ClassNotFoundException{
-        String statement = "INSERT INTO accounts (accountId, account, accountType, accountName, accountDescription, archiveAccount, userId) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    /*
+    ================================
+    MAIN PAGE METHODS
+    ================================
+     */
+    public static List<Transaction> getTransactionData(int userId) throws SQLException {
+        ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
+        ResultSet rs;
 
-        init();
-        PreparedStatement pst = conn.prepareStatement(statement);
-        pst.setInt(1, accountId);
-        pst.setString(2, accounts);
-        pst.setString(3, accountType);
-        pst.setString(4, accountName);
-        pst.setString(5, description);
-        pst.setInt(6, archiveAccount);
-        pst.setInt(7, userId);
-        pst.execute();
-        conn.close();
+        String assetQuery = "SELECT * FROM transactions WHERE userId = ?;";
 
-        return true;
+        PreparedStatement pst = getConn().prepareStatement(assetQuery);
+        pst.setInt(1, userId);
+
+        rs = pst.executeQuery();
+
+        while(rs.next()){
+            int transactionId = rs.getInt("transactionId");
+            String transactionType = rs.getString("transactionType");
+            String transactionAccount = rs.getString("transactionAccount");
+            LocalDate transactionDate = rs.getDate("transactionDate").toLocalDate();
+            String transactionCategory = rs.getString("transactionCategory");
+            String transactionAmount = rs.getString("transactionAmount");
+            String transactionDescription = rs.getString("transactionDescription");
+            transactionList.add(new Transaction(transactionId, transactionType, transactionAccount, transactionDate, transactionCategory, transactionAmount, transactionDescription));
+        }
+        return transactionList;
     }
 
-    public static boolean updateAccount(String accounts, String accountType, String accountName, int accountId, String description, int archiveAccount, int userId) throws SQLException, ClassNotFoundException {
-        String statement = "UPDATE account SET accountId = ?, account = ?, accountType = ?, accountName = ?, accountDescription = ?, archiveAccount = ? WHERE accountId = ? AND userId = ?";
-
-        init();
-        PreparedStatement pst = conn.prepareStatement(statement);
-        pst.setInt(1, accountId);
-        pst.setString(2, accounts);
-        pst.setString(3, accountType);
-        pst.setString(4, accountName);
-        pst.setString(5, description);
-        pst.setInt(6, archiveAccount);
-        pst.setInt(7, accountId);
-        pst.setInt(8, userId);
-        pst.execute();
-        conn.close();
-
-        return true;
-    }
-
+    /*
+    ================================
+    CHART OF ACCOUNTS METHODS
+    ================================
+     */
     public static List<Account> getAccountData(int userId, int accounts) throws SQLException {
         ObservableList<Account> accountList = FXCollections.observableArrayList();
         ResultSet rs;
 
-        String accountSwitch = "";
+        String assetQuery = "";
 
         switch (accounts){
             case 1:
                 //Asset Table
-                accountSwitch = "'Asset Account'";
+                assetQuery = "SELECT * FROM accounts WHERE account = 'Asset Account' AND userId = ?;";
                 break;
             case 2:
                 //Liability Table
-                accountSwitch = "'Liability Account'";
+                assetQuery = "SELECT * FROM accounts WHERE account = 'Liability Account' AND userId = ?;";
                 break;
             case 3:
                 //Income Table
-                accountSwitch = "'Income Account'";
+                assetQuery = "SELECT * FROM accounts WHERE account = 'Income Account' AND userId = ?;";
                 break;
             case 4:
                 //Expense Table
-                accountSwitch = "'Expense Account'";
+                assetQuery = "SELECT * FROM accounts WHERE account = 'Expense Account' AND userId = ?;";
                 break;
             case 5:
                 //Equity Table
-                accountSwitch = "'Equity Account'";
+                assetQuery = "SELECT * FROM accounts WHERE account = 'Equity Account' AND userId = ?;";
             default:
                 break;
         }
 
-        String assetQuery = "SELECT * FROM accounts WHERE account = ? AND userId = ?;";
-
         PreparedStatement pst = getConn().prepareStatement(assetQuery);
-        pst.setString(1, accountSwitch);
-        pst.setInt(2, userId);
+        pst.setInt(1, userId);
 
         rs = pst.executeQuery();
 
@@ -190,10 +180,19 @@ public class DBConnection {
             String accountType = rs.getString("accountType");
             String accountName = rs.getString("accountName");
             String accountDescription = rs.getString("accountDescription");
-            String archiveAccount = rs.getString("archiveAccount");
+
+            int archive = Integer.parseInt(rs.getString("archiveAccount"));
+            String archiveAccount;
+            if (archive == 1){
+                archiveAccount = "Archived";
+            }else{
+                archiveAccount = "Active";
+            }
+
             String userIdDb = rs.getString("userId");
             accountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
         }
+
         return accountList;
     }
 
@@ -214,36 +213,73 @@ public class DBConnection {
             String accountType = rs.getString("accountType");
             String accountName = rs.getString("accountName");
             String accountDescription = rs.getString("accountDescription");
-            String archiveAccount = rs.getString("archiveAccount");
+
+            int archive = Integer.parseInt(rs.getString("archiveAccount"));
+            String archiveAccount;
+            if (archive == 1){
+                archiveAccount = "Archived";
+            }else{
+                archiveAccount = "Active";
+            }
+
             String userIdDb = rs.getString("userId");
             accountList.add(new Account(accountId, account, accountType, accountName, accountDescription, archiveAccount, userIdDb));
         }
         return accountList;
     }
 
-    public static boolean saveNewTransaction(String transactionType, String transactionAccount, LocalDateTime transactionDate, String transactionCategory, String transactionAmount, String transactionDescription, int userId) throws SQLException, ClassNotFoundException {
-        String statement = "INSERT INTO transactions (transactionType, transactionAccount, transactionDate, transactionCategory, transactionAmount, userId) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    /*
+    ================================
+    ACCOUNT DETAIL METHODS
+    ================================
+     */
+    public static boolean saveNewAccount(String accounts, String accountType, String accountName, int accountId, String description, int archiveAccount, int userId) throws SQLException, ClassNotFoundException{
+        String statement = "INSERT INTO accounts (accountId, account, accountType, accountName, accountDescription, archiveAccount, userId) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         init();
         PreparedStatement pst = conn.prepareStatement(statement);
-        pst.setString(1, transactionType);
-        pst.setString(2, transactionAccount);
-        pst.setTimestamp(3, Timestamp.valueOf(transactionDate));
-        pst.setString(4, transactionCategory);
-        pst.setString(5, transactionAmount);
-        pst.setString(6, transactionDescription);
+        pst.setInt(1, accountId);
+        pst.setString(2, accounts);
+        pst.setString(3, accountType);
+        pst.setString(4, accountName);
+        pst.setString(5, description);
+        pst.setInt(6, archiveAccount);
         pst.setInt(7, userId);
         pst.execute();
-        conn.close();
 
         return true;
     }
 
+    public static boolean updateAccount(String accounts, String accountType, String accountName, int accountId, String description, int archiveAccount, int userId) throws SQLException, ClassNotFoundException {
+        String statement = "UPDATE accounts SET accountId = ?, account = ?, accountType = ?, accountName = ?, accountDescription = ?, archiveAccount = ? WHERE accountId = ? AND userId = ?";
+
+        init();
+        PreparedStatement pst = conn.prepareStatement(statement);
+        pst.setInt(1, accountId);
+        pst.setString(2, accounts);
+        pst.setString(3, accountType);
+        pst.setString(4, accountName);
+        pst.setString(5, description);
+        pst.setInt(6, archiveAccount);
+        pst.setInt(7, accountId);
+        pst.setInt(8, userId);
+        pst.execute();
+
+        //String transactionStmt = "UPDATE transactions SET ";
+
+        return true;
+    }
+
+    /*
+    ================================
+    TRANSACTION DETAIL METHODS
+    ================================
+     */
     public static List<String> getAccountNames(int userId) throws SQLException {
         ObservableList<String> accountNames = FXCollections.observableArrayList();
         ResultSet rs;
 
-        String query = "SELECT accountName, accountType FROM accounts (WHERE userId = ?) AND (account = 'Asset Account' OR account = 'Liability Account' OR account = 'Equity Account');";
+        String query = "SELECT accountName, archiveAccount FROM accounts WHERE userId = ? AND (account = 'Asset Account' OR account = 'Liability Account' OR account = 'Equity Account');";
 
         PreparedStatement pst = getConn().prepareStatement(query);
         pst.setInt(1, userId);
@@ -251,157 +287,230 @@ public class DBConnection {
         rs = pst.executeQuery();
 
         while(rs.next()){
-            String accountType = rs.getString("accountType");
-            String accountName = rs.getString("accountName");
+            int archive = rs.getInt("archiveAccount");
+            if (archive != 1){
+                String accountName = rs.getString("accountName");
 
-            String accountAdd = accountName + " - (" + accountType + ")";
-
-            accountNames.add(accountAdd);
+                accountNames.add(accountName);
+            }
         }
         return accountNames;
-
     }
 
-    public static List<String> getCategories(int userId, String account) throws SQLException {
+    public static List<String> getCategories(int userId, int category) throws SQLException {
         ObservableList<String> categories = FXCollections.observableArrayList();
         ResultSet rs;
 
-        String query = "SELECT accountName, accountType FROM accounts WHERE (userId = ?) AND (account = ?);";
+        String query = "";
+
+        switch(category){
+            case 1:
+                //Income
+                query = "SELECT accountName, accountType FROM accounts WHERE userId = ? AND (account = 'Income Account' OR account = 'Equity Account');";
+                break;
+            case 2:
+                //Expense
+                query = "SELECT accountName, accountType FROM accounts WHERE userId = ? AND (account = 'Expense Account' OR account = 'Equity Account');";
+                break;
+            default:
+                break;
+        }
 
         PreparedStatement pst = getConn().prepareStatement(query);
         pst.setInt(1, userId);
-        pst.setString(2, account);
 
         rs = pst.executeQuery();
 
         while(rs.next()){
-            String accountType = rs.getString("accountType");
             String accountName = rs.getString("accountName");
 
-            String accountAdd = accountName + " - (" + accountType + ")";
-
-            categories.add(accountAdd);
+            categories.add(accountName);
         }
 
         return categories;
     }
 
-    public static List<Transaction> getTransactionData(int userId) throws SQLException {
-        ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
-        ResultSet rs;
-
-        String assetQuery = "SELECT * FROM transactions WHERE userId = ?;";
-
-        PreparedStatement pst = getConn().prepareStatement(assetQuery);
-        pst.setInt(2, userId);
-
-        rs = pst.executeQuery();
-
-        while(rs.next()){
-            int transactionId = rs.getInt("transactionId");
-            String transactionType = rs.getString("transactionType");
-            String transactionAccount = rs.getString("transactionAccount");
-            LocalDateTime transactionDate = rs.getTimestamp("transactionDate").toLocalDateTime();
-            String transactionCategory = rs.getString("transactionCategory");
-            String transactionAmount = rs.getString("transactionAmount");
-            String transactionDescription = rs.getString("transactionDescription");
-            transactionList.add(new Transaction(transactionId, transactionType, transactionAccount, transactionDate, transactionCategory, transactionAmount, transactionDescription));
-        }
-        return transactionList;
-
-    }
-
-    public void deleteTransaction(int userId, int transactionId) throws SQLException {
-        String deleteQuery = "DELETE transaction.* FROM transactions WHERE transactionId = ? AND userId = ?";
+    public static void deleteTransaction(int transactionId) throws SQLException {
+        String deleteQuery = "DELETE FROM transactions WHERE transactionId = ?;";
         PreparedStatement pst = getConn().prepareStatement(deleteQuery);
         pst.setInt(1, transactionId);
-        pst.setInt(2, userId);
         pst.executeUpdate();
     }
 
-    public Integer getIncome(int userId, String start, String end) throws SQLException {
-        Integer totalIncome = 0;
-        ResultSet rs;
 
-        String incomeQuery = "USE otiq5otJUM;\n" +
-                "SELECT SUM(transactionAmount) AS 'Income'\n" +
-                "FROM accounts, transactions\n" +
-                "INNER JOIN accounts a ON transactions.transactionAccount = a.accountName\n" +
-                "WHERE (transactions.userId = ?)\n" +
-                "AND (accounts.account = 'Income Account')\n" +
-                "AND (transactions.transactionDate BETWEEN (?) AND (?));";
+    public static boolean saveNewTransaction(String transactionType, String transactionAccount, LocalDate transactionDate, String transactionCategory, String transactionAmount, String transactionDescription, int userId) throws SQLException, ClassNotFoundException {
+        String statement = "INSERT INTO transactions (transactionType, transactionAccount, transactionDate, transactionCategory, transactionAmount, transactionDescription, userId) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-        PreparedStatement pst = getConn().prepareStatement(incomeQuery);
-        pst.setInt(1, userId);
-        pst.setString(2, start);
-        pst.setString(3, end);
+        init();
+        PreparedStatement pst = conn.prepareStatement(statement);
+        pst.setString(1, transactionType);
+        pst.setString(2, transactionAccount);
+        pst.setDate(3, java.sql.Date.valueOf(transactionDate));
+        pst.setString(4, transactionCategory);
+        pst.setString(5, transactionAmount);
+        pst.setString(6, transactionDescription);
+        pst.setInt(7, userId);
+        pst.execute();
 
-        rs = pst.executeQuery();
-
-        totalIncome = rs.getInt("Income");
-        return totalIncome;
+        return true;
     }
 
-    public Integer getOperatingExpenses(int userId, String start, String end) throws SQLException {
-        Integer totalOperatingExpenses = 0;
-        ResultSet rs;
+    public static boolean updateTransaction(String transactionType, String transactionAccount, LocalDate transactionDate, String transactionCategory, String transactionAmount, String transactionDescription, int transId) throws SQLException, ClassNotFoundException {
+        String statement = "UPDATE transactions SET transactionType = ?, transactionAccount = ?, transactionDate = ?, transactionCategory = ?, transactionAmount = ?, transactionDescription = ? WHERE transactionId = ?;";
 
-        String expenseQuery = "SELECT SUM(transactionAmount) AS 'Operating Expense' FROM accounts, transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE (transactions.userId = ?) AND (accounts.accountType = ('Operating Expense' OR 'Uncategorized Income')) AND (transactions.transactionDate BETWEEN (?) AND (?))";
+        init();
+        PreparedStatement pst = conn.prepareStatement(statement);
+        pst.setString(1, transactionType);
+        pst.setString(2, transactionAccount);
+        pst.setDate(3, java.sql.Date.valueOf(transactionDate));
+        pst.setString(4, transactionCategory);
+        pst.setString(5, transactionAmount);
+        pst.setString(6, transactionDescription);
+        pst.setInt(7, transId);
+        pst.execute();
 
-        PreparedStatement pst = getConn().prepareStatement(expenseQuery);
-        pst.setInt(1, userId);
-        pst.setString(2, start);
-        pst.setString(3, end);
-
-        rs = pst.executeQuery();
-
-        totalOperatingExpenses = rs.getInt("Operating Expense");
-        return totalOperatingExpenses;
+        return true;
     }
 
-    public Integer getCogs(int userId, String start, String end) throws SQLException {
-        Integer totalCogs = 0;
-        ResultSet rs;
+    /*
+    ================================
+    PROFILE METHODS
+    ================================
+     */
+    public static boolean updateUser(String username, String name, String phone, String email, String orgName, int userId) throws SQLException, ClassNotFoundException {
+        String statement = "UPDATE users SET username = ?, name = ?, phone = ?, email = ?, organizationName = ? WHERE userId = ?";
 
-        String cogsQuery = "SELECT SUM(transactionAmount) AS 'COGS' FROM accounts, transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE (transactions.userId = ?) AND (accounts.accountType = 'Cost of Goods Sold') AND (transactions.transactionDate BETWEEN (?) AND (?))";
+        init();
+        PreparedStatement pst = conn.prepareStatement(statement);
+        pst.setString(1, username);
+        pst.setString(2, name);
+        pst.setString(3, phone);
+        pst.setString(4, email);
+        pst.setString(5, orgName);
+        pst.setInt(6, userId);
+        pst.execute();
 
-        PreparedStatement pst = getConn().prepareStatement(cogsQuery);
-        pst.setInt(1, userId);
-        pst.setString(2, start);
-        pst.setString(3, end);
-
-        rs = pst.executeQuery();
-
-        totalCogs = rs.getInt("COGS");
-        return totalCogs;
+        return true;
     }
 
-    public Integer getBalanceSheetData(int userId, String accountType, String transactionType, String date) throws SQLException {
-        int assets = 0;
+    /*
+    ==========================
+    REPORTS METHODS
+    ==========================
+     */
+    public static Integer getBalanceSheetData(int userId, int dataSwitch, String date) throws SQLException {
+        String incomeQuery = "";
+        String expenseQuery = "";
+
+        switch(dataSwitch){
+            case 1:
+                //Cash and Bank
+                incomeQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Income' AND a.accountType = 'Cash and Bank' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                expenseQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Expense' AND a.accountType = 'Cash and Bank' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                break;
+            case 2:
+                //Other Current Assets
+                incomeQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Income' AND a.accountType = 'Other Current Asset' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                expenseQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Expense' AND a.accountType = 'Other Current Asset' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                break;
+            case 3:
+                //Long Term Assets
+                incomeQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Income' AND a.accountType = 'Other Long Term Asset' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                expenseQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Expense' AND a.accountType = 'Other Long Term Asset' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                break;
+            case 4:
+                //Current Liabilities
+                incomeQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Income' AND a.accountType = 'Current Liability' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                expenseQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Expense' AND a.accountType = 'Current Liability' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                break;
+            case 5:
+                //Long term liabilities
+                incomeQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Income' AND a.accountType = 'Other Long Term Liability' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                expenseQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Expense' AND a.accountType = 'Other Long Term Liability' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                break;
+            case 6:
+                //other equity
+                incomeQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Income' AND a.accountType = 'Other Equity' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                expenseQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Expense' AND a.accountType = 'Other Equity' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                break;
+            case 7:
+                //retained earnings
+                incomeQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Income' AND a.accountType = 'Retained Earnings: Profit' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                expenseQuery = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE transactions.transactionType = 'Expense' AND a.accountType = 'Retained Earnings: Profit' AND transactions.transactionDate < '" + date + "' AND transactions.userId = ?;";
+                break;
+            default:
+                break;
+        }
+
+        ResultSet rs1;
+        PreparedStatement pst1 = getConn().prepareStatement(incomeQuery);
+        pst1.setInt(1, userId);
+        rs1 = pst1.executeQuery();
+
+        int income = 0;
+        if(rs1.next()){
+            income = rs1.getInt("amount");
+        }
+
+        //For testing
+        //System.out.println(pst1);
+        //System.out.println(income);
+
+        ResultSet rs2;
+        PreparedStatement pst2 = getConn().prepareStatement(expenseQuery);
+        pst2.setInt(1, userId);
+        rs2 = pst2.executeQuery();
+
+        int expense = 0;
+        if(rs2.next()){
+            expense = rs2.getInt("amount");
+        }
+
+        //For testing
+        //System.out.println(pst2);
+        //System.out.println(expense);
+
+        int amount;
+
+        if(dataSwitch <= 3){
+            amount = income - expense;
+        }else{
+            amount = expense - income;
+        }
+        return amount;
+    }
+
+    public static Integer getIncomeStatementData(int userId, String start, String end, int dataSwitch) throws SQLException {
+        String query = "";
+
+        switch(dataSwitch){
+            case 1:
+                //Income
+                query = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionCategory = a.accountName WHERE a.accountType = 'Income' AND (transactions.transactionDate BETWEEN '" + start + "' AND '" + end + "') AND transactions.userId = ?";
+                break;
+            case 2:
+                //Cost of goods sold
+                query = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionCategory = a.accountName WHERE a.accountType = 'Cost of Goods Sold' AND (transactions.transactionDate BETWEEN '" + start + "' AND '" + end + "') AND transactions.userId = ?";
+                break;
+            case 3:
+                //Operating expenses
+                query = "SELECT SUM(transactionAmount) AS 'amount' FROM transactions INNER JOIN accounts a ON transactions.transactionCategory = a.accountName WHERE a.accountType = 'Operation Expense' AND (transactions.transactionDate BETWEEN '" + start + "' AND '" + end + "') AND transactions.userId = ?";
+                break;
+        }
         ResultSet rs;
-
-        String query = "SELECT SUM(transactionAmount) AS 'Asset Income' FROM accounts, transactions INNER JOIN accounts a ON transactions.transactionAccount = a.accountName WHERE (transactions.userId = ?) AND (accounts.accountType = ?) AND (transactions.transactionType = ?) AND (transactions.transactionDate < (?))";
-
-
         PreparedStatement pst = getConn().prepareStatement(query);
         pst.setInt(1, userId);
-        pst.setString(2, accountType);
-        pst.setString(3, transactionType);
-        pst.setString(4, date);
 
         rs = pst.executeQuery();
+        int amount = 0;
 
-        assets = rs.getInt("Asset Income");
-        return assets;
-    }
+        if(rs.next()){
+            amount = rs.getInt("amount");
+        }
 
+        //System.out.println(pst);
+        //System.out.println(amount);
 
-
-    public static Connection getConn(){
-        return conn;
-    }
-
-    public static void closeConn () throws SQLException {
-        conn.close();
+        return amount;
     }
 }

@@ -8,12 +8,12 @@ public class Transaction {
     private int transactionId;
     private String transactionType;
     private String transactionAccount;
-    private LocalDateTime transactionDate;
+    private LocalDate transactionDate;
     private String transactionCategory;
     private String transactionAmount;
     private String transactionDescription;
 
-    public Transaction(int transactionId, String transactionType, String transactionAccount, LocalDateTime transactionDate, String transactionCategory, String transactionAmount, String transactionDescription) {
+    public Transaction(int transactionId, String transactionType, String transactionAccount, LocalDate transactionDate, String transactionCategory, String transactionAmount, String transactionDescription) {
         this.transactionId = transactionId;
         this.transactionType = transactionType;
         this.transactionAccount = transactionAccount;
@@ -47,11 +47,11 @@ public class Transaction {
         this.transactionAccount = transactionAccount;
     }
 
-    public LocalDateTime getTransactionDate() {
+    public LocalDate getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(LocalDateTime transactionDate) {
+    public void setTransactionDate(LocalDate transactionDate) {
         this.transactionDate = transactionDate;
     }
 

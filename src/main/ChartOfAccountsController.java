@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,6 +29,7 @@ public class ChartOfAccountsController {
     @FXML private TableColumn<Account, String> statusColumn;
 
     @FXML private ComboBox<String> accountsCb;
+    @FXML private Label headerLabel;
 
     ObservableList<String> accounts = FXCollections.observableArrayList("All Accounts", "Asset Accounts", "Liability Accounts", "Income Accounts", "Expense Accounts", "Equity Accounts");
 
@@ -35,10 +37,7 @@ public class ChartOfAccountsController {
         currentUser = user;
         myBk = bookkeeper;
 
-        System.out.println("Problem 1: Setting ComboBox items");
         accountsCb.setItems(accounts);
-        System.out.println("In accountsCb: " + accountsCb.getItems().get(0));
-        System.out.println("In accountsCb: " + accountsCb.getItems().get(1));
 
         populateTables();
     }
@@ -59,6 +58,9 @@ public class ChartOfAccountsController {
 
     @FXML private void updateTableClick() throws SQLException {
         int idx = accountsCb.getSelectionModel().getSelectedIndex();
+        headerLabel.setText(accountsCb.getValue());
+
+        System.out.println("IDX: " + idx);
 
         if(idx != 0){
             idColumn.setCellValueFactory(new PropertyValueFactory<>("accountId"));
@@ -83,10 +85,6 @@ public class ChartOfAccountsController {
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("archiveAccount"));
 
         accountsTable.getItems().setAll(DBConnection.getAllAccountData(currentUser.getUserId()));
-
-        System.out.println("Problem 2: Setting Table View");
-        System.out.println("In accountsTable: " + accountsTable.getItems().get(0).getAccountName());
-        System.out.println("In accountsTable: " + accountsTable.getItems().get(1).getAccountName());
     }
 
     public static Account getSelectedAccount(){
@@ -97,7 +95,8 @@ public class ChartOfAccountsController {
         accountModSelected = account;
     }
 
-    public static void resetSelectedAccount(){
+    public static Account resetSelectedAccount(){
         accountModSelected = null;
+        return accountModSelected;
     }
 }

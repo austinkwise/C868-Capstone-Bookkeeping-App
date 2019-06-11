@@ -20,6 +20,7 @@ public class Bookkeeper extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         this.stage = stage;
+
         showSignIn();
     }
 
@@ -64,52 +65,38 @@ public class Bookkeeper extends Application {
         stage.show();
     }
 
-    public void showTransactions() throws IOException, SQLException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/Transactions.fxml"));
-        loader.load();
-
-        TransactionsController controller = loader.getController();
-        controller.setupTransactions(this, currentUser);
-
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("/fxml/Transactions.fxml"));
-        mainPageController.mainArea.getChildren().setAll(pane);
-    }
-
-    public void showTransactionDetail() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/TransactionDetail.fxml"));
+    public void showTransactionDetail() throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/TransDetailController.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
 
-        TransactionDetailController controller = loader.getController();
+        TransDetailController controller = loader.getController();
         controller.setupTransactionDetail(currentUser);
 
         stage.show();
     }
 
     public void showChartofAccounts() throws IOException, SQLException, ClassNotFoundException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
-        loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
 
         ChartOfAccountsController controller = loader.getController();
         controller.setupChartOfAccounts(currentUser, this);
-
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("/fxml/ChartOfAccounts.fxml"));
-        mainPageController.mainArea.getChildren().setAll(pane);
     }
 
     public void showReports() throws IOException, SQLException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/Reports.fxml"));
-        loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Reports.fxml"));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+
         ReportsController controller = loader.getController();
         controller.setupReports(currentUser);
-
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("/fxml/Reports.fxml"));
-        mainPageController.mainArea.getChildren().setAll(pane);
     }
 
     public void showProfile() throws IOException {
@@ -117,9 +104,11 @@ public class Bookkeeper extends Application {
         Parent root = loader.load();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.show();
+
         ProfileController controller = loader.getController();
         controller.setProfile(currentUser);
+
+        stage.show();
     }
 
     public void showAccountDetail() throws IOException {
